@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  .row(ng-repeat="movie in movies")
+    .col-md-12
+      .title
+        h2 {{ movie.title }}
+        .date {{ movie.date | date: 'd MMMM yyyy'}}
+      h5 Starring
+      ul.cast
+        li(ng-repeat="actor in movie.cast")
+          {{ actor }}

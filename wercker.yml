@@ -35,7 +35,7 @@ deploy:
           scp -i $PRIVATEKEY_PATH -r . root@198.199.127.23:/var/local/www
     - script:
         name: npm install
-        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/ &&  npm install --production"
+        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/ &&  npm install"
     - script:
         name: start application
         code: |

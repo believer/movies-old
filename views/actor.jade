@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  //- My Ratings
+  - var ratings = [ 'Wtf was that?', 'Terrible', 'Bad', 'Poor', 'Meh', 'Fair', 'Good', 'Great', 'Superb', 'Fucking awesome' ];
+
+  .row.actor
+    a.back(href="/") Back to the start
+    .col-md-12
+      .title
+        h1= actor
+
+      ul
+        each movie in movies  
+          li= movie.title
+            if !!movie.date
+              .date #{ moment(movie.date).format(' (D MMMM YYYY)') }
+            else
+              .date a long long time ago
+
+      h3.rating= movies.length
+        span  movies
+

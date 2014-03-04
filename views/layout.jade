@@ -1,12 +1,10 @@
 doctype html
-html(ng-app="App")
+html
   head
     title= title
     link(rel='stylesheet', href='/css/vendor.css')
     link(rel='stylesheet', href='/css/movies.css')
-    script(src="/js/vendor.js")
-    script(src="/js/movies.js")
     script(src="http://localhost:35729/livereload.js")
-  body(ng-controller="MovieCtrl")
+  body
     .container
       block content

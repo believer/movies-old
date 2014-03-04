@@ -35,13 +35,6 @@ module.exports = function (grunt) {
       dist: {
         src: ['build/scripts/**/*.js'],
         dest: 'public/js/<%= pkg.name %>.js',
-      },
-      vendor: {
-        src: [
-          'bower_components/angular/angular.js',
-
-        ],
-        dest: 'public/js/vendor.js'
       }
     },
 

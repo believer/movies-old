@@ -1,7 +1,28 @@
 font = 'Helvetica Neue', Helvetica, Arial, sans-serif;
+accent = #F35C9F
+greyed = #999
+a = #000
+
+vendor(prop, args)
+  -webkit-{prop} args
+  -moz-{prop} args
+  -ms-{prop} args
+  -o-{prop} args
+  {prop} args
+
+transition()
+  vendor('transition', arguments)
+
 
 html, body
   height 100%
+
+a
+  color a
+
+  &:hover
+    color a
+    text-decoration underline
 
 ul
   list-style none
@@ -17,7 +38,7 @@ ul
     height 100%
     position relative 
     width 100%
-    
+
     .col-md-12
       -webkit-transform translateX(-50%) translateY(-50%)
       left 50%
@@ -32,16 +53,16 @@ ul
         text-transform uppercase
 
         .pre-title
-          color #999
+          color greyed
           font-weight 500
 
-        h2
+        h1, h2
           font-size 90px
           font-weight 900
           margin 0
       
         .date
-          color #999
+          color greyed
           font-size 21px
 
       .cast
@@ -51,3 +72,43 @@ ul
           &:not(:last-child):after
             content ","
             margin-right 5px
+      
+      h3.rating
+        font-size 27px
+        text-transform uppercase
+
+        span
+          color accent
+
+      [class^="ion"]
+        font-size 40px
+        margin-top 50px
+
+
+    &.actor
+      ul
+        margin 50px auto 0
+        width 60%
+
+        li
+          position relative
+          text-align left
+
+          .date
+            color greyed
+            position absolute
+            right 0
+            top 0
+
+.back
+  background accent
+  color #000
+  font-weight 900
+  padding 5px 10px
+  transition all 100ms ease
+
+
+  &:hover
+    background a
+    color #fff
+    text-decoration none

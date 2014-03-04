@@ -1,0 +1,42 @@
+box: wercker/nodejs
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    # A step that executes `npm install` command
+    - npm-install
+    # A step that executes `npm test` command
+    - npm-test
+
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
+deploy:
+  steps:
+    - add-to-known_hosts:
+        hostname: 198.199.127.23
+    - mktemp:
+        envvar: PRIVATEKEY_PATH
+    - create-file:
+        name: write key
+        filename: $PRIVATEKEY_PATH
+        content: $WERCKER_PRIVATE
+        overwrite: true
+    - script:
+        name: transfer application
+        code: |
+          pwd
+          ls -la
+          scp -i $PRIVATEKEY_PATH app.js package.json root@198.199.127.23:/var/local/www
+    - script:
+        name: npm install
+        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/ &&  npm install --production"
+    - script:
+        name: start application
+        code: |
+          ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "if [[ \"\$(status node-app)\" = *start/running* ]]; then stop node-app -n ; fi"
+          ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 start node-app

@@ -34,6 +34,4 @@ function search() {
   }
 }
 
-if (input) {
-  input.addEventListener('keyup', search, false);
-}
+input.addEventListener('keyup', search, false);

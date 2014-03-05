@@ -1,30 +1,48 @@
-var req     = require('supertest')
-,   express = require('express');
+var expect = require('expect.js')
+,   Browser = require('zombie');
 
-var app = require('../app.js');
+describe('Start page', function() {
+  before(function () {
+    this.browser = new Browser({ site: 'http://localhost:3000' });
+  });
 
-describe('#index', function () {
-  it('should respond', function (done) {
-    req(app)
-      .get('/')
-      .expect(200, done);
+  before(function(done) {
+    this.browser.visit('/', done);
+  });
+
+  it('should load the page correctly', function () {
+    expect(this.browser.success).to.be.true;
+  });
+
+  it('should set the correct title', function () {
+    expect(this.browser.text('title')).to.equal('Movee');
+  });
+
+  it('should loads 100 movies', function () {
+    expect(this.browser.queryAll('body > .container > .row').length).to.eql(100);
+  });
+
+  it('should navigate to an actor on click', function () {
+    this.browser.clickLink('body > .container > .row .cast li:first-child a', function () {
+      expect(this.browser.location).to.equal('/actor?name=Chris%20Hemsworth');
+    });
   });
 });
 
-describe('#actor', function () {
-  it('should respond', function (done) {
-    req(app)
-      .get('/actor')
-      .expect(200, done);
+describe('Actor page', function() {
+  before(function () {
+    this.browser = new Browser({ site: 'http://localhost:3000' });
   });
-});
 
-describe('#search', function () {
-  it('should respond with json', function (done) {
-    req(app)
-      .get('/search')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, done);
+  before(function(done) {
+    this.browser.visit('/actor?name=Hugh+Jackman', done);
+  });
+
+  it('should get the correct actor', function () {
+    expect(this.browser.text('.title h1')).to.equal('Hugh Jackman');
+  });
+
+  it('should calculate the correct amount of movies', function () {
+    expect(this.browser.queryAll('.actor ul li').length).to.eql(parseInt(this.browser.text('.rating'),10));
   });
 });

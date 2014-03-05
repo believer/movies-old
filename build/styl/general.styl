@@ -13,6 +13,8 @@ vendor(prop, args)
 transition()
   vendor('transition', arguments)
 
+transform()
+  vendor('transform', arguments)
 
 html, body
   height 100%
@@ -40,7 +42,7 @@ ul
     width 100%
 
     .col-md-12
-      -webkit-transform translateX(-50%) translateY(-50%)
+      transform translateX(-50%) translateY(-50%)
       left 50%
       position absolute
       top 50%
@@ -106,7 +108,6 @@ ul
   font-weight 900
   padding 5px 10px
   transition all 100ms ease
-
 
   &:hover
     background a

@@ -3,12 +3,10 @@ var req     = require('supertest')
 
 var app = require('../app.js');
 
-describe('#search', function () {
-  it('should respond with json', function (done) {
+describe('#index', function () {
+  it('should respond', function (done) {
     req(app)
-      .get('/search')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
+      .get('/')
       .expect(200, done);
   });
 });
@@ -21,10 +19,12 @@ describe('#actor', function () {
   });
 });
 
-describe('#index', function () {
-  it('should respond', function (done) {
+describe('#search', function () {
+  it('should respond with json', function (done) {
     req(app)
-      .get('/')
+      .get('/search')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
       .expect(200, done);
   });
 });

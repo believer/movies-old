@@ -3,6 +3,8 @@ accent = #F35C9F
 greyed = #999
 a = #000
 
+mobile = "(max-width:480px)"
+
 vendor(prop, args)
   -webkit-{prop} args
   -moz-{prop} args
@@ -38,15 +40,16 @@ ul
 
   .row
     height 100%
+    margin 0
     position relative 
     width 100%
 
     .col-md-12
       transform translateX(-50%) translateY(-50%)
       left 50%
+      max-width 970px
       position absolute
       top 50%
-      width 970px
 
       .title
         font-family font
@@ -62,6 +65,9 @@ ul
           font-size 90px
           font-weight 900
           margin 0
+
+          @media mobile
+            font-size 60px
       
         .date
           color greyed

@@ -36,5 +36,18 @@ exports.actor = function(req, res) {
     });
   });
 
+};
+
+exports.search = function(req, res) {
+
+  var search = req.query.title;
+
+  mongo.Db.connect(mongoUri, function(err, db) {
+    db.collection(process.env.MONGODB_DATABASE, function (er, collection) {
+      collection.find({ title: { $regex:search, $options:'i' } }).sort({date:-1}).limit(100).toArray(function(error, movies) {
+        res.send(movies);
+      });
+    });
+  });
 
 };

@@ -33,13 +33,16 @@ module.exports = function (grunt) {
         separator: ';',
       },
       dist: {
-        src: ['build/scripts/**/*.js'],
+        src: ['build/scripts/*.js'],
         dest: 'public/js/<%= pkg.name %>.js',
       }
     },
 
     jshint: {
-      beforeconcat: ['build/scripts/**/*.js']
+      options: {
+        jshintrc: true
+      },
+      beforeconcat: ['build/scripts/*.js']
     },
 
     watch: {
@@ -52,7 +55,7 @@ module.exports = function (grunt) {
         tasks: ['clear']
       },
       scripts: {
-        files: ['build/scripts/**/*.js','test/unit/**/*.js'],
+        files: ['build/scripts/*.js'],
         tasks: ['jshint', 'concat']
       },
       styl: {

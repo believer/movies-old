@@ -71,6 +71,7 @@ exports.stats = function(req, res) {
     directors: [],
     composers: [],
     ratings: [0,0,0,0,0,0,0,0,0,0],
+    ratingPlaytime: [0,0,0,0,0,0,0,0,0,0],
     years: {},
     certififcations: {},
     wilhelms: 0
@@ -128,7 +129,9 @@ exports.stats = function(req, res) {
 
         // Total minutes
         if (movie.runtime) {
-          stats.time.minutes += parseInt(movie.runtime, 10);
+          var runtime = parseInt(movie.runtime, 10);
+          stats.time.minutes += runtime;
+          stats.ratingPlaytime[movie.rating - 1] += runtime;
         }
 
         // Wilhelm screams

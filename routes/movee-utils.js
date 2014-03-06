@@ -9,7 +9,7 @@ var mongo    = require('mongodb')
  * @param  {array} names A long unsorted list of cast members with duplicates
  * @return {array}       An array with two arrays, [0] Names [1] Number of movies
  */
-exports.sortNames = function (names) {
+exports.sortNames = function (names, max) {
   var persons = []
   ,   movies  = []
   ,   prev;
@@ -28,7 +28,7 @@ exports.sortNames = function (names) {
   });
 
   return {
-    array: exports.getTen([persons, movies]),
+    array: exports.getTen([persons, movies], max),
     total: persons.length
   }
 };
@@ -41,7 +41,7 @@ exports.sortNames = function (names) {
  * @param  {array} arr Array from sortNames
  * @return {array}     Sorted array of the ten most common persons
  */
-exports.getTen = function (arr) {
+exports.getTen = function (arr, max) {
   var sorted = []
   ,   i      = 0;
 
@@ -59,7 +59,7 @@ exports.getTen = function (arr) {
 
   return sorted.sort(function (a,b) {
     return b.movies - a.movies;
-  }).slice(0,10);
+  }).slice(0,max);
 };
 
 /**

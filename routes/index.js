@@ -65,7 +65,8 @@ exports.stats = function(req, res) {
     time: {
       minutes: 0
     },
-    people: {},
+    numbers: {},
+    genres: [],
     actors: [],
     directors: [],
     composers: [],
@@ -121,6 +122,10 @@ exports.stats = function(req, res) {
           stats.composers.push(composer);
         });
 
+        movie.genres.map(function (genre) {
+          stats.genres.push(genre);
+        });
+
         // Total minutes
         if (movie.runtime) {
           stats.time.minutes += parseInt(movie.runtime, 10);
@@ -145,14 +150,20 @@ exports.stats = function(req, res) {
         {
           type:"composers",
           array:stats.composers
+        },
+        {
+          type:"genres",
+          array:stats.genres,
+          amount: 20
         }
       ];
 
       unsorted.map(function (obj) {
-        var sorted = movee.sortNames(obj.array);
+        var max = obj.amount ? obj.amount : 10;
+        var sorted = movee.sortNames(obj.array, max);
 
-        stats[obj.type]        = sorted.array;
-        stats.people[obj.type] = sorted.total;
+        stats[obj.type]         = sorted.array;
+        stats.numbers[obj.type] = sorted.total;
       });
 
       // Calculate some more times from the total minutes

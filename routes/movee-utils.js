@@ -59,7 +59,7 @@ exports.getTen = function (arr, max) {
 
   return sorted.sort(function (a,b) {
     return b.movies - a.movies;
-  }).slice(0,max);
+  }).slice(0, max);
 };
 
 /**

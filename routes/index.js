@@ -73,7 +73,7 @@ exports.stats = function(req, res) {
     ratings: [0,0,0,0,0,0,0,0,0,0],
     ratingPlaytime: [0,0,0,0,0,0,0,0,0,0],
     years: {},
-    certififcations: {},
+    certifications: {},
     wilhelms: 0
   };
 
@@ -85,7 +85,7 @@ exports.stats = function(req, res) {
       movies.map(function (movie) {
 
         var year = stats.years[movie.year]
-        ,   cert = stats.certififcations[movie.certification];
+        ,   cert = stats.certifications[movie.certification];
 
         // Distribution over the years
         if (movie.year && !year) {
@@ -98,7 +98,7 @@ exports.stats = function(req, res) {
 
         // Certifications
         if (movie.certification && !cert) {
-          stats.certififcations[movie.certification] = {
+          stats.certifications[movie.certification] = {
             movies: 1
           }; 
         } else if (cert) {

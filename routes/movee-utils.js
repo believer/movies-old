@@ -1,3 +1,6 @@
+var mongo    = require('mongodb')
+,   mongoUri = process.env.MONGO_URL;
+
 /**
  * sortNames
  * Takes an array of names and sorts it into two different arrays
@@ -57,4 +60,16 @@ exports.getTen = function (arr) {
   return sorted.sort(function (a,b) {
     return b.movies - a.movies;
   }).slice(0,10);
+};
+
+/**
+ * mongoConnect
+ * Connects to mongo with given db search
+ * 
+ * @param  {function} connect Function containing mongo search
+ */
+exports.mongoConnect = function (connect) {
+  mongo.Db.connect(mongoUri, function(err, db) {
+    db.collection(process.env.MONGODB_DATABASE, connect);
+  });
 };

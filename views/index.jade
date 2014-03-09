@@ -16,11 +16,11 @@ block content
               .date #{ moment(movie.date).format('D MMMM YYYY') }
             h2= movie.title
           h5 Starring
-          ul.cast
           if !!movie.cast
-            each actor in movie.cast
-              li
-                a(href="/actor?name=" + actor)= actor
+            ul.cast
+              each actor in movie.cast
+                li
+                  a(href="/actor?name=" + actor)= actor
           h3.rating It was 
             span.rating= ratings[movie.rating - 1]
           .ion-ios7-arrow-down

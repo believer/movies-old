@@ -9,11 +9,11 @@ block content
           .title
             h2(name="title=")= movie.title
           h5 Starring
-          ul.cast
           if !!movie.cast
-            each actor in movie.cast
-              li
-                a(href="/actor?name=" + actor)= actor.name
+            ul.cast
+              each actor in movie.cast
+                li
+                  a(href="/actor?name=" + actor)= actor.name
           h3.rating I give it a
             input(type="text")
 

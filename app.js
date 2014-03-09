@@ -32,6 +32,10 @@ app.get('/', routes.index);
 app.get('/actor', routes.actor);
 app.get('/search', routes.search);
 app.get('/stats', routes.stats);
+app.get('/np', routes.np);
+app.get('/watching', routes.trakt);
+app.get('/tmdb', routes.tmdb);
+app.post('/new', routes.watching);
 
 module.exports = app;
 

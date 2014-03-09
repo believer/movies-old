@@ -1,0 +1,63 @@
+extends layout
+
+block content
+
+  //- My Ratings
+  - var ratings = [ 'Wtf was that?', 'Terrible', 'Bad', 'Poor', 'Meh', 'Fair', 'Good', 'Great', 'Superb', 'Fucking awesome' ];
+
+  .row.stats
+    .row.time
+      .col-md-3
+        .big= stats.time.minutes
+        span minutes. Damnit, I could have had sex approximately 
+        spna= Math.floor(stats.time.minutes / 7) + " times instead."
+
+      .col-md-3
+        .big= stats.time.hours
+        span hours
+
+      .col-md-3
+        .big= stats.time.days
+        span days
+
+      .col-md-3
+        .big= stats.time.years
+        span years
+    .row.years
+      .col-md-12
+        ul
+          each movies,year in stats.years
+            li(style="height:" + (movies.movies/150)*100 + "%")
+              span= year
+    .row.numbers
+      .col-md-4
+        .row
+          .col-md-6
+            div.big= stats.numbers.actors
+            div actors
+          .col-md-6
+            div.ion-person
+            div.ion-person
+            div.ion-person
+            div.ion-person
+            div.ion-person
+            div.ion-person
+            div.ion-person
+            div.ion-person
+
+    .row
+      .col-md-3
+        ul
+          each actor in stats.actors
+            li= actor.name
+              span= " " + actor.movies
+      .col-md-3
+        ul
+          each director in stats.directors
+            li= director.name
+              span= " " + director.movies
+      .col-md-3
+        ul
+          each composer in stats.composers
+            li= composer.name
+              span= " " + composer.movies

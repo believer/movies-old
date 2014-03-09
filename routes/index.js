@@ -3,7 +3,8 @@
  * GET home page.
  */
 
-var movee = require('./movee-utils');
+var movee   = require('./movee-utils')
+,   request = require('request');
 
 /**
  * Gets all movies from db
@@ -66,12 +67,12 @@ exports.stats = function(req, res) {
       minutes: 0
     },
     numbers: {},
-    genres: [],
     actors: [],
     directors: [],
     composers: [],
     ratings: [0,0,0,0,0,0,0,0,0,0],
     ratingPlaytime: [0,0,0,0,0,0,0,0,0,0],
+    genres: [],
     years: {},
     certifications: {},
     wilhelms: 0
@@ -169,12 +170,153 @@ exports.stats = function(req, res) {
         stats.numbers[obj.type] = sorted.total;
       });
 
+      stats.actors.map(function (actor, i) {
+        var actorRating = 0
+        ,   zeroRating = 0;
+
+        movee.mongoConnect(function (er, collection) {
+          collection.find({ cast: { $regex:actor.name, $options:'i' }}).toArray(function (error, movies) {
+            movies.map(function (movie) {
+              actorRating += movie.rating ? parseInt(movie.rating, 10) : 0;
+
+              if (!movie.rating) {
+                zeroRating++
+              }
+            });
+
+            actorRating = (actorRating / (movies.length - zeroRating)).toFixed(2);
+            console.log(actorRating);
+          });
+        });
+      });
+
       // Calculate some more times from the total minutes
       stats.time.hours = ~~(stats.time.minutes / 60);
       stats.time.days  = ~~(stats.time.hours / 24);
       stats.time.years = (stats.time.days / 365).toFixed(2);
 
+      // res.render('stats', { stats:stats });
       res.send(stats);
+    });
+  });
+
+};
+
+exports.trakt = function(req,res) {
+  
+  var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
+  ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
+
+  request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
+    var body = JSON.parse(body);
+    var movie = body.movie;
+
+    request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
+      var people = JSON.parse(cast);
+      movie.cast = people.cast;
+      movie.crew = people.crew;
+      res.send(movie);
+    });
+
+  });
+
+};
+
+exports.np = function(req,res) {
+  
+  var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
+  ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
+
+  request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
+    var body = JSON.parse(body);
+    var movie = body.movie;
+
+    request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
+      var people = JSON.parse(cast);
+      movie.cast = people.cast;
+      movie.crew = people.crew;
+      res.render('watching', { movie:movie });
+    });
+
+  });
+
+};
+
+exports.tmdb = function(req,res) {
+
+  var tmdbBaseUrl = 'http://api.themoviedb.org/3/movie/';
+  var tmdbKey     = 'f714b68eea27249e2d7b857433dc2b50';
+
+  var tmdb_url = tmdbBaseUrl + '{query}/casts?api_key={key}'
+  ,   query    = req.query
+  ,   url      = tmdb_url.replace('{query}', query.imdbid).replace('{key}',tmdbKey);
+
+  console.log(query);
+
+  request({ uri:url, headers: {'Accept': 'application/json'} },function (err, response, body) {
+    res.send(body);
+  });
+
+};
+
+exports.watching = function(req, res) {
+
+  request('http://localhost:3000/watching',function (err, response, body) {
+
+    var nowWatching = JSON.parse(body)
+    ,   cast        = nowWatching.cast
+    ,   crew        = nowWatching.crew;
+
+
+    var myMovie = {
+      title: nowWatching.title,
+      date: new Date().toISOString(),
+      year: nowWatching.year,
+      desc: nowWatching.overview,
+      imdb: "http://www.imdb.com/" + nowWatching.imdb_id,
+      rating: parseInt(nowWatching.rating,10),
+      img:null,
+      runtime:nowWatching.runtime,
+      imdbid: nowWatching.imdb_id,
+      cast:[],
+      music: [],
+      writer: [],
+      genres: nowWatching.genres,
+      certification: nowWatching.certification,
+      tagline: nowWatching.tagline,
+      wilhelm: nowWatching.wilhelm ? true : false,
+      director: []
+    };
+
+    // Add cast
+    for(var i = 0; i < cast.length; i++) {
+      myMovie.cast[i] = cast[i].name;
+    }
+
+    for(i = 0; i < crew.length; i++) {
+      if (crew[i].job === "Director") {
+        myMovie.director.push(crew[i].name);
+      } else if (crew[i].job === "Original Music Composer") {
+        myMovie.music.push(crew[i].name);
+      }
+
+      if (crew[i].department === "Writing" || crew[i].job === "Screenplay" || crew[i].job === "Writer") {
+        myMovie.writer.push(crew[i].name);
+      }
+    }
+
+    movee.mongoConnect(function (er, collection) {
+      collection.find().sort({_id:-1}).limit(1).toArray(function (error, latest) {
+        myMovie.id  = parseInt(latest[0].id, 10) + 1;
+        myMovie.num = parseInt(latest[0].num, 10) + 1;
+
+        collection.insert(myMovie, function(err, inserted) {
+          console.log(error);
+          console.log(inserted);
+        });
+
+        res.send(myMovie);
+      });
     });
   });
 

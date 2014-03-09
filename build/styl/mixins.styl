@@ -1,0 +1,14 @@
+@import "variables"
+
+vendor(prop, args)
+  -webkit-{prop} args
+  -moz-{prop} args
+  -ms-{prop} args
+  -o-{prop} args
+  {prop} args
+
+transition()
+  vendor('transition', arguments)
+
+transform()
+  vendor('transform', arguments)

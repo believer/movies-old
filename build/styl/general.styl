@@ -1,22 +1,4 @@
-font = 'Helvetica Neue', Helvetica, Arial, sans-serif;
-accent = #F35C9F
-greyed = #999
-a = #000
-
-mobile = "(max-width:480px)"
-
-vendor(prop, args)
-  -webkit-{prop} args
-  -moz-{prop} args
-  -ms-{prop} args
-  -o-{prop} args
-  {prop} args
-
-transition()
-  vendor('transition', arguments)
-
-transform()
-  vendor('transform', arguments)
+@import "mixins"
 
 html, body
   height 100%
@@ -38,7 +20,7 @@ ul
   height 100%
   width 100%
 
-  .row
+  .row.index, .row.actor
     height 100%
     margin 0
     position relative 

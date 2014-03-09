@@ -3,22 +3,29 @@ extends layout
 block content
 
   //- My Ratings
-  - var ratings = [ 'Wtf was that?', 'Terrible', 'Bad', 'Poor', 'Meh', 'Fair', 'Good', 'Great', 'Superb', 'Fucking awesome' ];
+  - var ratings = [ 'WTF, seriously!?', 'Terrible', 'Bad', 'Poor', 'Meh', 'Fair', 'Good', 'Great', 'Superb', 'Fucking awesome' ];
   //- div
     //- input#search(type="text")
     //- ul#search-results
-  each movie in movies 
-    .row
+  if movies
+    each movie in movies 
+      .row.index
+        .col-md-12
+          .title
+            if !!movie.date
+              .date #{ moment(movie.date).format('D MMMM YYYY') }
+            h2= movie.title
+          h5 Starring
+          ul.cast
+          if !!movie.cast
+            each actor in movie.cast
+              li
+                a(href="/actor?name=" + actor)= actor
+          h3.rating It was 
+            span.rating= ratings[movie.rating - 1]
+          .ion-ios7-arrow-down
+  else
+    .row.index
       .col-md-12
         .title
-          if !!movie.date
-            .date #{ moment(movie.date).format('D MMMM YYYY') }
-          h2= movie.title
-        h5 Starring
-        ul.cast
-          each actor in movie.cast
-            li
-              a(href="/actor?name=" + actor)= actor
-        h3.rating It was 
-          span.rating= ratings[movie.rating - 1]
-        .ion-ios7-arrow-down        
+          "You're not watching anything"

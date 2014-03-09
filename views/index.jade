@@ -21,6 +21,10 @@ block content
               each actor in movie.cast
                 li
                   a(href="/actor?name=" + actor)= actor
+          .information
+            .num= movie.num
+            .certification= "Rated " + movie.certification
+            .year= movie.year
           h3.rating It was 
             span.rating= ratings[movie.rating - 1]
           .ion-ios7-arrow-down

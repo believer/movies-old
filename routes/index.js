@@ -274,7 +274,7 @@ exports.watching = function(req, res) {
       year: nowWatching.year,
       desc: nowWatching.overview,
       imdb: "http://www.imdb.com/" + nowWatching.imdb_id,
-      rating: parseInt(nowWatching.rating,10),
+      rating: nowWatching.rating ? parseInt(nowWatching.rating,10) : 0,
       img:null,
       runtime:nowWatching.runtime,
       imdbid: nowWatching.imdb_id,

@@ -1,4 +1,4 @@
-var expect = require('expect.js')
+var expect  = require('expect.js')
 ,   Browser = require('zombie');
 
 describe('Start page', function() {
@@ -18,13 +18,14 @@ describe('Start page', function() {
     expect(this.browser.text('title')).to.equal('Movee');
   });
 
-  it('should loads 100 movies', function () {
+  it('should load 100 movies', function () {
     expect(this.browser.queryAll('body > .container > .row').length).to.eql(100);
   });
 
   it('should navigate to an actor on click', function () {
+    var url = this.browser.query('body > .container > .row .cast li:first-child a');
     this.browser.clickLink('body > .container > .row .cast li:first-child a', function () {
-      expect(this.browser.location).to.equal('/actor?name=Chris%20Hemsworth');
+      expect(this.browser.location).to.equal(url.href);
     });
   });
 });

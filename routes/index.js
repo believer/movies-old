@@ -231,6 +231,8 @@ exports.np = function(req,res) {
     var body = JSON.parse(body);
     var movie = body.movie;
 
+    console.log(body);
+
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
       var people = JSON.parse(cast);
       movie.cast = people.cast;
@@ -261,12 +263,12 @@ exports.tmdb = function(req,res) {
 
 exports.watching = function(req, res) {
 
+
   request('http://localhost:3000/watching',function (err, response, body) {
 
     var nowWatching = JSON.parse(body)
     ,   cast        = nowWatching.cast
     ,   crew        = nowWatching.crew;
-
 
     var myMovie = {
       title: nowWatching.title,
@@ -274,8 +276,8 @@ exports.watching = function(req, res) {
       year: nowWatching.year,
       desc: nowWatching.overview,
       imdb: "http://www.imdb.com/" + nowWatching.imdb_id,
-      rating: nowWatching.rating ? parseInt(nowWatching.rating, 10) : 0,
-      img:null,
+      rating: req.body.rating ? parseInt(req.body.rating, 10) : 0,
+      img:"",
       runtime:nowWatching.runtime,
       imdbid: nowWatching.imdb_id,
       cast:[],

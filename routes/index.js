@@ -262,13 +262,12 @@ exports.tmdb = function(req,res) {
 };
 
 exports.watching = function(req, res) {
-
-
   request('http://localhost:3000/watching',function (err, response, body) {
 
     var nowWatching = JSON.parse(body)
     ,   cast        = nowWatching.cast
-    ,   crew        = nowWatching.crew;
+    ,   crew        = nowWatching.crew
+    ,   extraCast   = req.body.extraCast;
 
     var myMovie = {
       title: nowWatching.title,
@@ -292,9 +291,16 @@ exports.watching = function(req, res) {
 
     // Add cast
     for(var i = 0; i < cast.length; i++) {
-      myMovie.cast[i] = cast[i].name;
+      myMovie.cast.push(cast[i].name);
     }
 
+    extraCast
+      .split(',')
+      .map(function (actor) {
+        myMovie.cast.push(actor.trim());
+      });
+
+    // Add crew
     for(i = 0; i < crew.length; i++) {
       if (crew[i].job === "Director") {
         myMovie.director.push(crew[i].name);

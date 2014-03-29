@@ -1,39 +1,46 @@
 @import "variables"
 
-.row.stats
-  margin 50px auto
-  max-width 970px
-  text-align left
-
-  .time
+.row
+  &.time, &.people
+    font-size 28px
     text-align center
 
-  .big
-    font-size 60px
+    .amount
+      font-size:12px;
 
-  .years
-    margin 50px 0 80px
-    ul
-      height 200px
-      li
-        background accent
-        display inline-block
-        margin-right 5px
-        position relative
-        width 10px
+  &.stats
+    margin 50px auto
+    max-width 970px
+    text-align left
 
-        span
-          position absolute
-          bottom -30px
-          font-size 10px
-          left -10px
-          text-align right
-          width 30px
-          -webkit-transform rotate(-90deg)
+    thead, tbody
+      tr
+        td:last-child, th:last-child
+          text-align:center;
 
-  .numbers
-    margin-bottom 20px
-    text-align center
+    .years
+      margin 50px 0 80px
+      ul
+        height 200px
+        li
+          background accent
+          display inline-block
+          margin-right 5px
+          position relative
+          width 10px
 
-    .ion-person
-      font-size 40px
+          span
+            position absolute
+            bottom -30px
+            font-size 10px
+            left -10px
+            text-align right
+            width 30px
+            -webkit-transform rotate(-90deg)
+
+    .numbers
+      margin-bottom 20px
+      text-align center
+
+      .ion-person
+        font-size 40px

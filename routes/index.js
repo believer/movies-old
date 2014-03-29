@@ -195,8 +195,8 @@ exports.stats = function(req, res) {
       stats.time.days  = ~~(stats.time.hours / 24);
       stats.time.years = (stats.time.days / 365).toFixed(2);
 
-      // res.render('stats', { stats:stats });
-      res.send(stats);
+      res.render('stats', { stats:stats });
+      // res.send(stats);
     });
   });
 
@@ -268,6 +268,10 @@ exports.watching = function(req, res) {
     ,   cast        = nowWatching.cast
     ,   crew        = nowWatching.crew
     ,   extraCast   = req.body.extraCast;
+
+    if (!extraCast) {
+      extraCast = [];
+    }
 
     var myMovie = {
       title: nowWatching.title,

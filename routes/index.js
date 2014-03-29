@@ -269,8 +269,8 @@ exports.watching = function(req, res) {
     ,   crew        = nowWatching.crew
     ,   extraCast   = req.body.extraCast;
 
-    if (!extraCast) {
-      extraCast = [];
+    if (!extraCast.length) {
+      extraCast = '';
     }
 
     var myMovie = {
@@ -280,7 +280,7 @@ exports.watching = function(req, res) {
       desc: nowWatching.overview,
       imdb: "http://www.imdb.com/" + nowWatching.imdb_id,
       rating: req.body.rating ? parseInt(req.body.rating, 10) : 0,
-      img:"",
+      img:"", 
       runtime:nowWatching.runtime,
       imdbid: nowWatching.imdb_id,
       cast:[],
@@ -301,6 +301,7 @@ exports.watching = function(req, res) {
     extraCast
       .split(',')
       .map(function (actor) {
+        if (!actor.length) return;
         myMovie.cast.push(actor.trim());
       });
 

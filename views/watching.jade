@@ -3,7 +3,7 @@ extends layout
 block content
 
   if movie
-    .row.index
+    #watching.row.index
       .col-md-12
         form(method="post",action="/new")
           .title
@@ -14,6 +14,7 @@ block content
               each actor in movie.cast
                 li
                   a(href="/actor?name=" + actor)= actor.name
+          h5 Any extra cast members?
           .more-cast
             input(type="text", id="extraCast", name="extraCast")
           h3.rating I give it a

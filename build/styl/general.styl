@@ -33,6 +33,10 @@ ul
       position absolute
       top 50%
 
+      @media mobile
+        padding 0
+        width 100%
+
       .title
         font-family font
         font-size 120px
@@ -49,7 +53,9 @@ ul
           margin 0
 
           @media mobile
-            font-size 60px
+            font-size 40px
+            margin 20px 0
+            word-break break-word
       
         .date
           color greyed

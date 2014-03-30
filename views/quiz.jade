@@ -1,0 +1,21 @@
+extends layout
+
+block content
+
+  if movie
+    #correct.row.index
+      .col-md-12
+        h2 You are correct!
+    #incorrect.row.index
+      .col-md-12
+        h2 Nope, that's not right!
+    #quiz.row.index
+      .col-md-12
+        .score-wrap Your current score is 
+          span#score
+        .title
+          h2= movie.tagline
+        ul
+          each alt in alternatives
+            - var clazz = (alt === movie.title) ? 'correct' : '';
+            li(class=clazz)= alt

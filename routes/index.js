@@ -202,41 +202,21 @@ exports.stats = function(req, res) {
 
 };
 
-exports.trakt = function(req,res) {
-  
-  var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
-  ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
-
-  request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
-    var body = JSON.parse(body);
-    var movie = body.movie;
-
-    request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
-      var people = JSON.parse(cast);
-      movie.cast = people.cast;
-      movie.crew = people.crew;
-      res.send(movie);
-    });
-
-  });
-
-};
-
 exports.np = function(req,res) {
   
   var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
   ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
 
   request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
-    var body = JSON.parse(body);
-    var movie = body.movie;
-
-    console.log(body);
+    var body  = JSON.parse(body)
+    ,   movie = body.movie;
 
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
       var people = JSON.parse(cast);
+
       movie.cast = people.cast;
       movie.crew = people.crew;
+
       res.render('watching', { movie:movie });
     });
 
@@ -332,5 +312,68 @@ exports.watching = function(req, res) {
       });
     });
   });
+
+};
+
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+function shuffle(array) {
+  var currentIndex = array.length
+    , temporaryValue
+    , randomIndex
+    ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+exports.quiz = function (req,res) {
+
+  movee.mongoConnect(function (err, collection) {
+    collection.find({tagline:{"$not":{"$size":0},$exists: true}}).toArray(function(error, movies) {
+
+      movies = movies.filter(function (movie) {
+        return movie.tagline !== '';
+      });
+
+      var random       = randomIntFromInterval(0, movies.length)
+      ,   randomMovie  = movies[random]
+      ,   alternatives = [];
+
+      alternatives.push(randomMovie.title);
+
+      movee.mongoConnect(function (err, collection) {
+        collection.find().toArray(function(error, all) {     
+          for (var i = 0; i < 3; i++) {
+            var randAlternative = randomIntFromInterval(0, all.length);
+            var alt = all[randAlternative];
+
+            if (alt) {
+                alternatives.push(alt.title);
+            }
+          }
+
+          alternatives = shuffle(alternatives);
+
+          res.render('quiz', { movie:randomMovie, alternatives:alternatives });
+        });
+      });
+    });
+  }); 
 
 };

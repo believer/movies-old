@@ -33,6 +33,7 @@ app.get('/actor', routes.actor);
 app.get('/search', routes.search);
 app.get('/stats', routes.stats);
 app.get('/np', routes.np);
+app.get('/watching', routes.trakt);
 app.get('/tmdb', routes.tmdb);
 app.get('/quiz', routes.quiz);
 app.post('/new', routes.watching);

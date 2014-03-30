@@ -233,7 +233,6 @@ exports.tmdb = function(req,res) {
   ,   query    = req.query
   ,   url      = tmdb_url.replace('{query}', query.imdbid).replace('{key}',tmdbKey);
 
-  console.log(query);
 
   request({ uri:url, headers: {'Accept': 'application/json'} },function (err, response, body) {
     res.send(body);
@@ -241,8 +240,31 @@ exports.tmdb = function(req,res) {
 
 };
 
+
+exports.trakt = function(req,res) {
+  
+  var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
+  ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
+
+  request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
+    var body = JSON.parse(body);
+    var movie = body.movie;
+
+    request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
+      var people = JSON.parse(cast);
+      movie.cast = people.cast;
+      movie.crew = people.crew;
+      res.send(movie);
+    });
+
+  });
+
+};
+
 exports.watching = function(req, res) {
   request('http://localhost:3000/watching',function (err, response, body) {
+
+    console.log(err, response, body);
 
     var nowWatching = JSON.parse(body)
     ,   cast        = nowWatching.cast

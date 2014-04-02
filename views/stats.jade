@@ -49,3 +49,17 @@ block content
             tr
               td= director.name
               td= director.movies
+  .row.years
+    .col-md-12
+      ul
+        each movies,year in stats.years
+          - var size = (movies.movies / 170) * 100 + "%"
+          li(style="height:" + size)
+            span
+              .year= year
+
+  .row.certs
+    each movies,cert in stats.certifications
+      .col-md-2
+        .cert= cert
+        .movies= movies.movies + " movies"

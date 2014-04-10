@@ -1,6 +1,8 @@
 @import "variables"
 
 .row
+  margin 40px auto
+  
   &.time, &.people
     font-size 28px
     text-align center
@@ -9,7 +11,6 @@
       font-size:12px;
 
   &.stats
-    margin 50px auto
     max-width 970px
     text-align left
 
@@ -18,29 +19,39 @@
         td:last-child, th:last-child
           text-align:center;
 
-    .years
-      margin 50px 0 80px
-      ul
-        height 200px
-        li
-          background accent
-          display inline-block
-          margin-right 5px
-          position relative
-          width 10px
-
-          span
-            position absolute
-            bottom -30px
-            font-size 10px
-            left -10px
-            text-align right
-            width 30px
-            -webkit-transform rotate(-90deg)
-
     .numbers
       margin-bottom 20px
       text-align center
 
       .ion-person
         font-size 40px
+
+  &.years
+    ul
+      height 200px
+      li
+        background accent
+        display inline-block
+        margin-right 5px
+        position relative
+        width 10px
+
+        span
+          position absolute
+          bottom -30px
+          font-size 10px
+          left -10px
+          text-align right
+          width 30px
+          -webkit-transform rotate(-90deg)
+
+  &.certs
+    .col-md-2
+      background greyed
+      color #fff
+      font-size 18px
+      margin-right 30px
+      padding 10px
+
+      .cert
+        font-weight bold

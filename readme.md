@@ -2,4 +2,4 @@
 
 ## CleanMov
 
-Reboot of my movie site with much better codez
+Reboot of my movie statistics site

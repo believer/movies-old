@@ -13,6 +13,8 @@ var movee   = require('./movee-utils')
  */
 exports.index = function(req, res) {
 
+  'use strict';
+
   movee.mongoConnect(function (err, collection) {
     collection.find().sort({date:-1}).limit(100).toArray(function(error, movies) {
       res.render('index', { movies:movies });
@@ -27,7 +29,9 @@ exports.index = function(req, res) {
  * @param  {obj} res
  */
 exports.actor = function(req, res) {
-  
+ 
+  'use strict';
+
   var name = req.query.name;
 
   movee.mongoConnect(function (er, collection) {
@@ -45,6 +49,8 @@ exports.actor = function(req, res) {
  */
 exports.search = function(req, res) {
 
+  'use strict';
+
   var search = req.query.title;
 
   movee.mongoConnect(function (er, collection) {
@@ -61,6 +67,8 @@ exports.search = function(req, res) {
  * @param  {obj} res 
  */
 exports.stats = function(req, res) {
+
+  'use strict';
 
   var stats = {
     time: {
@@ -92,7 +100,7 @@ exports.stats = function(req, res) {
         if (movie.year && !year) {
           stats.years[movie.year] = {
             movies: 1
-          }; 
+          };
         } else if (year) {
           year.movies++;
         }
@@ -101,7 +109,7 @@ exports.stats = function(req, res) {
         if (movie.certification && !cert) {
           stats.certifications[movie.certification] = {
             movies: 1
-          }; 
+          };
         } else if (cert) {
           cert.movies++;
         }
@@ -144,19 +152,19 @@ exports.stats = function(req, res) {
       // and the total amount of person
       var unsorted = [
         {
-          type:"actors",
+          type:'actors',
           array:stats.actors
         },
         {
-          type:"directors",
+          type:'directors',
           array:stats.directors
         },
         {
-          type:"composers",
+          type:'composers',
           array:stats.composers
         },
         {
-          type:"genres",
+          type:'genres',
           array:stats.genres,
           amount: 20
         }
@@ -170,7 +178,7 @@ exports.stats = function(req, res) {
         stats.numbers[obj.type] = sorted.total;
       });
 
-      stats.actors.map(function (actor, i) {
+      stats.actors.map(function (actor) {
         var actorRating = 0
         ,   zeroRating = 0;
 
@@ -180,19 +188,18 @@ exports.stats = function(req, res) {
               actorRating += movie.rating ? parseInt(movie.rating, 10) : 0;
 
               if (!movie.rating) {
-                zeroRating++
+                zeroRating++;
               }
             });
 
             actorRating = (actorRating / (movies.length - zeroRating)).toFixed(2);
-            console.log(actorRating);
           });
         });
       });
 
       // Calculate some more times from the total minutes
-      stats.time.hours = ~~(stats.time.minutes / 60);
-      stats.time.days  = ~~(stats.time.hours / 24);
+      stats.time.hours = Math.floor(stats.time.minutes / 60);
+      stats.time.days  = Math.floor(stats.time.hours / 24);
       stats.time.years = (stats.time.days / 365).toFixed(2);
 
       res.render('stats', { stats:stats });
@@ -203,13 +210,15 @@ exports.stats = function(req, res) {
 };
 
 exports.np = function(req,res) {
-  
+
+  'use strict';
+
   var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
   ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
 
   request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
-    var body  = JSON.parse(body)
-    ,   movie = body.movie;
+    body  = JSON.parse(body);
+    var movie = body.movie;
 
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
       var people = JSON.parse(cast);
@@ -225,6 +234,8 @@ exports.np = function(req,res) {
 };
 
 exports.tmdb = function(req,res) {
+
+  'use strict';
 
   var tmdbBaseUrl = 'http://api.themoviedb.org/3/movie/';
   var tmdbKey     = 'f714b68eea27249e2d7b857433dc2b50';
@@ -242,12 +253,14 @@ exports.tmdb = function(req,res) {
 
 
 exports.trakt = function(req,res) {
-  
+
+  'use strict';
+
   var traktKey = 'd406d5272832ce0d4b213dc69ba5aaa4'
   ,   traktUrl = 'http://api.trakt.tv/user/watching.json/{key}/believer';
 
   request(traktUrl.replace('{key}',traktKey),function (err, response, body) {
-    var body = JSON.parse(body);
+    body = JSON.parse(body);
     var movie = body.movie;
 
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
@@ -261,28 +274,42 @@ exports.trakt = function(req,res) {
 
 };
 
-exports.watching = function(req, res) {
-  request('http://localhost:3000/watching',function (err, response, body) {
+var crews = {
+  Director: function () { 'use strict'; return 'director'; },
+  Writing: function () {  'use strict'; return 'writer'; },
+  Screenplay: function () { 'use strict'; return 'writer'; },
+  Writer: function () { 'use strict'; return 'writer'; },
+  'Original Music Composer': function () {  'use strict'; return 'music'; }
+};
 
-    console.log(err, response, body);
+function getCrew (job) {
+  'use strict';
+
+  var crew = crews[job];
+  return crew ? crew() : null;
+}
+
+exports.watching = function(req, res) {
+
+  'use strict';
+
+  request('http://localhost:3000/watching',function (err, response, body) {
 
     var nowWatching = JSON.parse(body)
     ,   cast        = nowWatching.cast
     ,   crew        = nowWatching.crew
-    ,   extraCast   = req.body.extraCast;
-
-    if (!extraCast.length) {
-      extraCast = '';
-    }
+    ,   extraCast   = req.body.extraCast.length ? req.body.extraCast : ''
+    ,   rating      = req.body.rating ? parseInt(req.body.rating, 10) : 0
+    ,   wilhelm     = nowWatching.wilhelm ? true : false;
 
     var myMovie = {
       title: nowWatching.title,
       date: new Date().toISOString(),
       year: nowWatching.year,
       desc: nowWatching.overview,
-      imdb: "http://www.imdb.com/" + nowWatching.imdb_id,
-      rating: req.body.rating ? parseInt(req.body.rating, 10) : 0,
-      img:"", 
+      imdb: 'http://www.imdb.com/' + nowWatching.imdb_id,
+      rating: rating,
+      img:'',
       runtime:nowWatching.runtime,
       imdbid: nowWatching.imdb_id,
       cast:[],
@@ -291,34 +318,27 @@ exports.watching = function(req, res) {
       genres: nowWatching.genres,
       certification: nowWatching.certification,
       tagline: nowWatching.tagline,
-      wilhelm: nowWatching.wilhelm ? true : false,
+      wilhelm: wilhelm,
       director: []
     };
 
     // Add cast
-    for(var i = 0; i < cast.length; i++) {
-      myMovie.cast.push(cast[i].name);
-    }
+    cast.map(function (actor) {
+      myMovie.cast.push(actor.name);
+    });
 
     extraCast
       .split(',')
       .map(function (actor) {
-        if (!actor.length) return;
+        if (!actor.length) { return; }
         myMovie.cast.push(actor.trim());
       });
 
     // Add crew
-    for(i = 0; i < crew.length; i++) {
-      if (crew[i].job === "Director") {
-        myMovie.director.push(crew[i].name);
-      } else if (crew[i].job === "Original Music Composer") {
-        myMovie.music.push(crew[i].name);
-      }
-
-      if (crew[i].department === "Writing" || crew[i].job === "Screenplay" || crew[i].job === "Writer") {
-        myMovie.writer.push(crew[i].name);
-      }
-    }
+    crew.map(function (person) {
+      var crewType = getCrew(person.job);
+      if (crewType) { myMovie[crewType].push(person.name); }
+    });
 
     movee.mongoConnect(function (er, collection) {
       collection.find().sort({_id:-1}).limit(1).toArray(function (error, latest) {
@@ -330,23 +350,26 @@ exports.watching = function(req, res) {
           console.log(inserted);
         });
 
-        res.send(myMovie);
+        res.redirect('/');
       });
     });
   });
 
 };
 
-function randomIntFromInterval(min,max)
-{
-    return Math.floor(Math.random()*(max-min+1)+min);
+function randomIntFromInterval (min,max) {
+  'use strict';
+
+  return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-function shuffle(array) {
+function shuffle (array) {
+
+  'use strict';
+
   var currentIndex = array.length
-    , temporaryValue
-    , randomIndex
-    ;
+  ,   temporaryValue
+  ,   randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
@@ -366,8 +389,10 @@ function shuffle(array) {
 
 exports.quiz = function (req,res) {
 
+  'use strict';
+
   movee.mongoConnect(function (err, collection) {
-    collection.find({tagline:{"$not":{"$size":0},$exists: true}}).toArray(function(error, movies) {
+    collection.find({tagline:{'$not':{'$size':0},$exists: true}}).toArray(function(error, movies) {
 
       movies = movies.filter(function (movie) {
         return movie.tagline !== '';
@@ -380,13 +405,13 @@ exports.quiz = function (req,res) {
       alternatives.push(randomMovie.title);
 
       movee.mongoConnect(function (err, collection) {
-        collection.find().toArray(function(error, all) {     
+        collection.find().toArray(function(error, all) {
           for (var i = 0; i < 3; i++) {
             var randAlternative = randomIntFromInterval(0, all.length);
             var alt = all[randAlternative];
 
             if (alt) {
-                alternatives.push(alt.title);
+              alternatives.push(alt.title);
             }
           }
 
@@ -396,6 +421,6 @@ exports.quiz = function (req,res) {
         });
       });
     });
-  }); 
+  });
 
 };

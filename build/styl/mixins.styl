@@ -7,6 +7,20 @@ vendor(prop, args)
   -o-{prop} args
   {prop} args
 
+appearance()
+  vendor('appearance', arguments)
+
+border-radius(radius = 3px)
+  vendor('border-radius', radius)
+
+box-sizing(type = 'border-box')
+  vendor('box-sizing', type)
+
+text-overflow()
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
 transition()
   vendor('transition', arguments)
 

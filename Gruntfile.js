@@ -42,7 +42,7 @@ module.exports = function (grunt) {
       options: {
         jshintrc: true
       },
-      beforeconcat: ['build/scripts/*.js']
+      beforeconcat: ['build/scripts/*.js', 'routes/*.js']
     },
 
     watch: {
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
         tasks: ['clear']
       },
       scripts: {
-        files: ['build/scripts/*.js'],
+        files: ['build/scripts/*.js', 'routes/*.js'],
         tasks: ['jshint', 'concat']
       },
       styl: {

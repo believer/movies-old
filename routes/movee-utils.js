@@ -10,6 +10,9 @@ var mongo    = require('mongodb')
  * @return {array}       An array with two arrays, [0] Names [1] Number of movies
  */
 exports.sortNames = function (names, max) {
+  
+  'use strict';
+
   var persons = []
   ,   movies  = []
   ,   prev;
@@ -30,7 +33,8 @@ exports.sortNames = function (names, max) {
   return {
     array: exports.getTen([persons, movies], max),
     total: persons.length
-  }
+  };
+  
 };
 
 /**
@@ -42,6 +46,9 @@ exports.sortNames = function (names, max) {
  * @return {array}     Sorted array of the ten most common persons
  */
 exports.getTen = function (arr, max) {
+  
+  'use strict';
+
   var sorted = []
   ,   i      = 0;
 
@@ -69,6 +76,9 @@ exports.getTen = function (arr, max) {
  * @param  {function} connect Function containing mongo search
  */
 exports.mongoConnect = function (connect) {
+
+  'use strict';
+
   mongo.Db.connect(mongoUri, function(err, db) {
     db.collection(process.env.MONGODB_DATABASE, connect);
   });

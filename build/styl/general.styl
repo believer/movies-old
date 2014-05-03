@@ -29,6 +29,11 @@ input:focus
     position relative 
     width 100%
 
+    @media mobile
+      border-bottom 1px solid #ccc
+      height auto
+      margin 20px 0
+
     .col-md-12
       transform translateX(-50%) translateY(-50%)
       left 50%
@@ -37,7 +42,11 @@ input:focus
       top 50%
 
       @media mobile
+        left 0
         padding 0
+        position relative
+        transform none
+        top 0
         width 100%
 
       .title
@@ -83,9 +92,18 @@ input:focus
         li
           display inline-block
 
+          @media mobile
+            display block
+            font-size 14px
+            margin-bottom 5px
+
           &:not(:last-child):after
             content ","
             margin-right 5px
+
+            @media mobile
+              content ""
+              margin 0
       
       h3.rating
         font-size 27px
@@ -97,8 +115,10 @@ input:focus
       [class^="ion"]
         font-size 40px
         margin-top 50px
-
-
+      
+        @media mobile
+          display none
+      
     &.actor
       ul
         margin 50px auto 0
@@ -107,6 +127,8 @@ input:focus
         li
           position relative
           text-align left
+
+
 
           .date
             color greyed

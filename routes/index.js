@@ -244,7 +244,6 @@ exports.tmdb = function(req,res) {
   ,   query    = req.query
   ,   url      = tmdb_url.replace('{query}', query.imdbid).replace('{key}',tmdbKey);
 
-
   request({ uri:url, headers: {'Accept': 'application/json'} },function (err, response, body) {
     res.send(body);
   });

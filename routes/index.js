@@ -48,7 +48,7 @@ exports.covers = function (req, res) {
 
   if (id) {
     request({
-      url: tmdbBaseUrl + id + '/images?language=en&api_key=' + tmdbKey,
+      url: tmdbBaseUrl + id + '/images?api_key=' + tmdbKey,
       headers: {'Accept': 'application/json'},
       method: 'GET'
     }, function (error, response, body) {

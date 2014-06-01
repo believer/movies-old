@@ -285,7 +285,7 @@ exports.tmdb = function(req,res) {
 };
 
 
-exports.trakt = function () {
+exports.trakt = function (req,res) {
 
   'use strict';
 
@@ -296,12 +296,12 @@ exports.trakt = function () {
     body = JSON.parse(body);
     var movie = body.movie;
 
-    console.log(movie);
-
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
       var people = JSON.parse(cast);
       movie.cast = people.cast;
       movie.crew = people.crew;
+
+      res.send(movie);
     });
 
   });
@@ -358,14 +358,17 @@ exports.watching = function(req, res) {
       if (crewType) { myMovie[crewType].push(person.name); }
     });
 
+    console.log(myMovie);
+
     movee.mongoConnect(function (er, collection) {
       collection.find().sort({_id:-1}).limit(1).toArray(function (error, latest) {
+        console.log(error,latest);
         myMovie.id  = parseInt(latest[0].id, 10) + 1;
         myMovie.num = parseInt(latest[0].num, 10) + 1;
 
         collection.insert(myMovie, function(err, inserted) {
-          console.log(error);
-          console.log(inserted);
+          console.log('error', error);
+          console.log('inserted', inserted);
         });
 
         res.redirect('/');

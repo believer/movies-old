@@ -29,7 +29,7 @@ exports.index = function(req, res) {
         function (err, response, poster) {
           movie.poster = JSON.parse(poster);
           movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
-          movie.skip = '/?skip=' + (skip+1);
+          movie.skip = skip;
 
           res.render('index', { movie:movie });
           // res.send(movie);

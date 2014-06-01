@@ -7,7 +7,7 @@ if (!!read) {
 }
 
 function readMore () {
-  var col = document.querySelector('.row.index > .col-md-12');
+  var col = document.querySelector('.row.index');
   col.classList.toggle('more');
 }
 

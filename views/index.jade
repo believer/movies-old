@@ -4,15 +4,14 @@ block content
 
   //- My Ratings
   - var ratings = [ 'WTF, seriously!?', 'Terrible', 'Bad', 'Poor', 'Meh', 'Fair', 'Good', 'Great', 'Superb', 'Fucking awesome' ];
-  //- div
-    //- input#search(type="text")
-    //- ul#search-results
+
   if movie
     .row.index
       img#cover(src=movie.poster.img)
       .col-md-12
         .bg
         .text
+          a.next(href=movie.skip) NÄSTA
           .title
             h2= movie.title
           .subtitle
@@ -37,4 +36,4 @@ block content
   else
     .row.index
       .col-md-12
-        .title You're not watching anything
+        .title You haven't watched anything

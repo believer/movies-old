@@ -18,8 +18,10 @@ exports.index = function(req, res) {
 
   'use strict';
 
+  var skip = parseInt(req.query.skip, 10) || 0;
+
   movee.mongoConnect(function (err, collection) {
-    collection.find().sort({date:-1}).limit(1).toArray(function(error, movies) {
+    collection.find().sort({date:-1}).skip(skip).limit(1).toArray(function(error, movies) {
 
       var movie = movies[0];
 
@@ -27,10 +29,11 @@ exports.index = function(req, res) {
         function (err, response, poster) {
           movie.poster = JSON.parse(poster);
           movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
+          movie.skip = '/?skip=' + (skip+1);
 
           res.render('index', { movie:movie });
+          // res.send(movie);
         });
-      // res.render('index', { movies:movies });
     });
   });
 };

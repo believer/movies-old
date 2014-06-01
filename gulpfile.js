@@ -68,7 +68,7 @@ gulp.task('watch', function () {
   gulp.watch(['app.js','build/scripts/**/*.js','routes/**/*.js','test/**/*.js'], ['test']);
 
   var server = livereload();
-  gulp.watch(['public/**','views/**/*.jade']).on('change', function (file) {
+  gulp.watch('public/**').on('change', function (file) {
       server.changed(file.path);
   });
 });

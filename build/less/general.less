@@ -65,6 +65,7 @@ input:focus {
         }
 
         .text {
+          -webkit-overflow-scrolling:touch;
           height:100%;
           overflow:auto;
         }
@@ -120,13 +121,16 @@ input:focus {
         line-height:1;
         text-transform:uppercase;
 
-        h1, h2 {
+        h2 {
           font-size:90px;
           font-weight:300;
           margin:0;
 
           @media @mobile {
-            font-size:40px;
+            .text-overflow();
+
+            font-size:21px;
+            max-width:78%;
             word-break:break-word;
           }
         }
@@ -134,7 +138,7 @@ input:focus {
 
       .certification {
         .border-radius();
-        .position(top,right,25px,20px);
+        .position(top,right,22px,20px);
 
         border:2px solid #fff;
         padding:5px;

@@ -24,8 +24,9 @@ exports.index = function(req, res) {
     collection.find().sort({date:-1}).skip(skip).limit(1).toArray(function(error, movies) {
 
       var movie = movies[0];
+      var imdb = movie.imdbid || '';
 
-      request('http://localhost:3000/cover?imdb=' + movie.imdbid,
+      request('http://localhost:3000/cover?imdb=' + imdb,
         function (err, response, poster) {
           movie.poster = JSON.parse(poster);
           movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
@@ -45,23 +46,27 @@ exports.covers = function (req, res) {
 
   console.log(id);
 
-  request({
-    url: tmdbBaseUrl + id + '/images?language=en&api_key=' + tmdbKey,
-    headers: {'Accept': 'application/json'},
-    method: 'GET'
-  }, function (error, response, body) {
-    if (!error && body) {
-      var movie = JSON.parse(body);
+  if (id) {
+    request({
+      url: tmdbBaseUrl + id + '/images?language=en&api_key=' + tmdbKey,
+      headers: {'Accept': 'application/json'},
+      method: 'GET'
+    }, function (error, response, body) {
+      if (!error && body) {
+        var movie = JSON.parse(body);
 
-      if (movie.posters.length) {
-        var poster = {
-          img: 'http://image.tmdb.org/t/p/w500' + movie.posters[0].file_path
-        };
-        
-        res.send(poster);
+        if (movie.posters.length) {
+          var poster = {
+            img: 'http://image.tmdb.org/t/p/w500' + movie.posters[0].file_path
+          };
+          
+          res.send(poster);
+        }
       }
-    }
-  });
+    });
+  } else {
+    res.send({});
+  }
 };
 
 /**

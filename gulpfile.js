@@ -65,7 +65,7 @@ gulp.task('nodemon', function () {
 
 gulp.task('watch', function () {
   gulp.watch([config.styles + config.allStyle], ['less']);
-  gulp.watch(['app.js','build/scripts/**/*.js','routes/**/*.js','test/**/*.js'], ['test']);
+  gulp.watch(['app.js','build/scripts/**/*.js','routes/**/*.js','test/**/*.js'], ['scripts','test']);
 
   var server = livereload();
   gulp.watch('public/**').on('change', function (file) {

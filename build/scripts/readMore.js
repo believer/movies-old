@@ -10,3 +10,12 @@ function readMore () {
   var col = document.querySelector('.row.index > .col-md-12');
   col.classList.toggle('more');
 }
+
+var a = document.getElementsByTagName("a");
+
+for(var i=0; i < a.length; i++) {
+  a[i].onclick = function () {
+    window.location=this.getAttribute("href");
+    return false
+  }
+}

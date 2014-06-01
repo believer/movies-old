@@ -6,6 +6,9 @@
 var movee   = require('./movee-utils')
 ,   request = require('request');
 
+var tmdbBaseUrl = 'http://api.themoviedb.org/3/movie/'
+,   tmdbKey     = 'f714b68eea27249e2d7b857433dc2b50';
+
 /**
  * Gets all movies from db
  * @param  {obj} req 
@@ -16,9 +19,45 @@ exports.index = function(req, res) {
   'use strict';
 
   movee.mongoConnect(function (err, collection) {
-    collection.find().sort({date:-1}).limit(100).toArray(function(error, movies) {
-      res.render('index', { movies:movies });
+    collection.find().sort({date:-1}).limit(1).toArray(function(error, movies) {
+
+      var movie = movies[0];
+
+      request('http://localhost:3000/cover?imdb=' + movie.imdbid,
+        function (err, response, poster) {
+          movie.poster = JSON.parse(poster);
+          movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
+
+          res.render('index', { movie:movie });
+        });
+      // res.render('index', { movies:movies });
     });
+  });
+};
+
+exports.covers = function (req, res) {
+  'use strict';
+
+  var id = req.query.imdb;
+
+  console.log(id);
+
+  request({
+    url: tmdbBaseUrl + id + '/images?language=en&api_key=' + tmdbKey,
+    headers: {'Accept': 'application/json'},
+    method: 'GET'
+  }, function (error, response, body) {
+    if (!error && body) {
+      var movie = JSON.parse(body);
+
+      if (movie.posters.length) {
+        var poster = {
+          img: 'http://image.tmdb.org/t/p/w500' + movie.posters[0].file_path
+        };
+        
+        res.send(poster);
+      }
+    }
   });
 };
 
@@ -222,7 +261,11 @@ exports.np = function(req,res) {
       movie.cast = people.cast;
       movie.crew = people.crew;
 
-      res.render('watching', { movie:movie });
+      request('http://localhost:3000/cover?imdb=' + movie.imdb_id,
+        function (err, response, poster) {
+          movie.poster = JSON.parse(poster);
+          res.render('watching', { movie:movie });
+        });
     });
 
   });
@@ -231,9 +274,6 @@ exports.np = function(req,res) {
 exports.tmdb = function(req,res) {
 
   'use strict';
-
-  var tmdbBaseUrl = 'http://api.themoviedb.org/3/movie/';
-  var tmdbKey     = 'f714b68eea27249e2d7b857433dc2b50';
 
   var tmdb_url = tmdbBaseUrl + '{query}/casts?api_key={key}'
   ,   query    = req.query
@@ -245,7 +285,7 @@ exports.tmdb = function(req,res) {
 };
 
 
-exports.trakt = function(req,res) {
+exports.trakt = function () {
 
   'use strict';
 
@@ -256,11 +296,12 @@ exports.trakt = function(req,res) {
     body = JSON.parse(body);
     var movie = body.movie;
 
+    console.log(movie);
+
     request('http://localhost:3000/tmdb?imdbid=' + movie.imdb_id, function (err, response, cast) {
       var people = JSON.parse(cast);
       movie.cast = people.cast;
       movie.crew = people.crew;
-      res.send(movie);
     });
 
   });

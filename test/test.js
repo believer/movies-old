@@ -23,6 +23,12 @@ describe('index', function() {
   });
 });
 
+describe('#covers', function() {
+  it('should be a function', function () {
+    expect(routes.covers).to.be.a('function');
+  });
+});
+
 describe('actor', function() {
   var req,res;
 

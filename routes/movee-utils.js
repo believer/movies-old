@@ -104,3 +104,13 @@ exports.randomIntFromInterval = function (min,max) {
 
   return Math.floor(Math.random()*(max-min+1)+min);
 };
+
+exports.truncate = function (text, length) {
+  'use strict';
+  
+  if (text && text.length > length) {
+    return text.substr(0, length) + '...';
+  }
+
+  return text;
+};

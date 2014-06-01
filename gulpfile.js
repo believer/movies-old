@@ -6,10 +6,13 @@ var gulp       = require('gulp')
 ,   plumber    = require('gulp-plumber')
 ,   rename     = require('gulp-rename')
 ,   jshint     = require('gulp-jshint')
-,   mocha      = require('gulp-mocha');
+,   mocha      = require('gulp-mocha')
+,   concat     = require('gulp-concat')
+,   uglify     = require('gulp-uglify');
+
 
 var config = {
-  styles: 'build/styl/**/',
+  styles: 'build/less/**/',
   stylesOut: 'public/css/',
   allStyle: '*.less',
   mainStyle: 'main.less'
@@ -27,6 +30,14 @@ gulp.task('test', function (cb) {
         .pipe(mocha({reporter: 'Spec'}))
         .on('end', cb);
     });
+});
+
+gulp.task('scripts', function() {
+  gulp.src('./build/scripts/*.js')
+    .pipe(jshint())
+    .pipe(concat('all.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./public/js'));
 });
 
 gulp.task('less', function () {
@@ -57,9 +68,9 @@ gulp.task('watch', function () {
   gulp.watch(['app.js','build/scripts/**/*.js','routes/**/*.js','test/**/*.js'], ['test']);
 
   var server = livereload();
-  gulp.watch('public/**').on('change', function (file) {
+  gulp.watch(['public/**','views/**/*.jade']).on('change', function (file) {
       server.changed(file.path);
   });
 });
 
-gulp.task('default', ['less', 'test', 'nodemon', 'watch']);
+gulp.task('default', ['less', 'scripts', 'test', 'nodemon', 'watch']);

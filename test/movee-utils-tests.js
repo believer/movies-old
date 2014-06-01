@@ -129,3 +129,29 @@ describe('#randomIntFromInterval', function() {
     expect(movee.randomIntFromInterval(5,20)).to.be.a('number').gte(5).lte(20);
   });
 });
+
+describe('#truncate', function() {
+  var text, shorttext;
+
+  it('should be a function', function () {
+    expect(movee.truncate).to.be.a('function');
+  });
+
+  beforeEach(function () {
+    text = 'Cotton candy tiramisu oat cake pudding biscuit caramels candy bear claw jujubes. Fruitcake liquorice jelly jelly beans bonbon cake liquorice tart carrot cake. Liquorice gummies ice cream cake cheesecake apple pie jujubes fruitcake. Fruitcake jelly beans tiramisu candy oat cake chocolate cake muffin icing pudding. Danish caramels chocolate bar gummi bears cupcake. Liquorice topping caramels macaroon lollipop chocolate. Powder cheesecake jelly-o. Macaroon pastry oat cake lollipop cheesecake muffin pastry.Macaroon chocolate bar oat cake apple pie ice cream jelly gingerbread. Applicake candy liquorice chocolate bar croissant cookie cotton candy. Gingerbread candy chocolate bar. Sesame snaps jelly jelly beans ice cream jelly-o. Chupa chups marshmallow brownie halvah. Pie candy canes sweet roll sugar plum. Gingerbread croissant icing. Cookie sweet roll apple pie dessert macaroon brownie.';
+
+    shorttext = 'Cotton candy tiramisu oat';
+  });
+
+  it('should return a truncated string', function () {
+    expect(movee.truncate(text, 100)).to.have.length(103);
+  });
+
+  it('should add ellipsis at the end of the truncated string', function () {
+    expect(movee.truncate(text, 100).substr(-3)).to.eql('...');
+  });
+
+  it('should not do anything with a short string', function () {
+    expect(movee.truncate(shorttext,100)).to.eql(shorttext);
+  });
+});

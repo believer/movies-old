@@ -5,6 +5,7 @@ block content
   if movie
     #watching.row.index
       .col-md-12
+        img(src=movie.poster.img)
         form(method="post",action="/new")
           .title
             h2(name="title=")= movie.title

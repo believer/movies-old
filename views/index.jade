@@ -7,30 +7,33 @@ block content
   //- div
     //- input#search(type="text")
     //- ul#search-results
-  if movies
-    each movie in movies
-      .row.index
-        .col-md-12
+  if movie
+    .row.index
+      img#cover(src=movie.poster.img)
+      .col-md-12
+        .bg
+        .text
           .title
-            if !!movie.date
-              .date #{ moment(movie.date).format('D MMMM YYYY') }
             h2= movie.title
-          h5 Starring
-          if !!movie.cast
-            ul.cast
-              each actor in movie.cast
-                li
-                  a(href="/actor?name=" + actor)= actor
-          .information
-            if !!movie.num
-              .num= movie.num
-            if !!movie.certification
-              .certification= "Rated " + movie.certification
+          .subtitle
+            if !!movie.date
+              span.date #{ moment(movie.date).format('D MMMM YYYY') }
             if !!movie.year
-              .year= movie.year
-          h3.rating It was 
-            span.rating= ratings[movie.rating - 1]
-          .ion-ios7-arrow-down
+              span.year= ' (' + movie.year + ')'
+          if !!movie.certification
+            .certification= movie.certification
+          if !!movie.desc
+            .description= movie.shortDesc
+            .long-description= movie.desc 
+          if !!movie.cast
+          ul.cast
+            each actor in movie.cast
+              li
+                a(href="/actor?name=" + actor)= actor
+          .read-more
+            span.close-text Read more
+            span.open-text Back
+            .ion-ios7-arrow-down
   else
     .row.index
       .col-md-12

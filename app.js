@@ -3,10 +3,13 @@
  * Module dependencies.
  */
 
+'use strict';
+
 var express = require('express')
 ,   routes  = require('./routes')
 ,   http    = require('http')
 ,   path    = require('path')
+,   cors    = require('cors')
 ,   app     = express();
 
 // all environments
@@ -18,13 +21,14 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(cors());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 

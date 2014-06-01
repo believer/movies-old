@@ -20,7 +20,14 @@
   "smarttabs": true,
   "laxcomma": true,
   "maxcomplexity": 10,
+  "expr":true,
   "globals": {
-    "angular": false
+    "angular": false,
+    "expect": true,
+    "it": true,
+    "describe": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "gulp": true
   }
 }

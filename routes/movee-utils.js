@@ -83,3 +83,24 @@ exports.mongoConnect = function (connect) {
     db.collection(process.env.MONGODB_DATABASE, connect);
   });
 };
+
+var crews = {
+  Director: function () { 'use strict'; return 'director'; },
+  Writing: function () {  'use strict'; return 'writer'; },
+  Screenplay: function () { 'use strict'; return 'writer'; },
+  Writer: function () { 'use strict'; return 'writer'; },
+  'Original Music Composer': function () {  'use strict'; return 'music'; }
+};
+
+exports.getCrew = function (job) {
+  'use strict';
+
+  var crew = crews[job];
+  return crew ? crew() : null;
+};
+
+exports.randomIntFromInterval = function (min,max) {
+  'use strict';
+
+  return Math.floor(Math.random()*(max-min+1)+min);
+};

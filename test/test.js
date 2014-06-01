@@ -1,49 +1,86 @@
-var expect  = require('expect.js')
-,   Browser = require('zombie');
+'use strict';
 
-describe('Start page', function() {
-  before(function () {
-    this.browser = new Browser({ site: 'http://localhost:3000' });
+var chai   = require('chai')
+,   expect = chai.expect
+,   sinon  = require('sinon')
+,   routes = require('../routes/index');
+
+chai.use(require('sinon-chai'));
+
+describe('index', function() {
+  var req,res;
+
+  beforeEach(function () {
+    req = {};
+    res = {
+      send: sinon.spy(),
+      render: sinon.spy()
+    };
   });
 
-  before(function(done) {
-    this.browser.visit('/', done);
-  });
-
-  it('should load the page correctly', function () {
-    expect(this.browser.success).to.be.true;
-  });
-
-  it('should set the correct title', function () {
-    expect(this.browser.text('title')).to.equal('Movee');
-  });
-
-  it('should load 100 movies', function () {
-    expect(this.browser.queryAll('body > .container > .row').length).to.eql(100);
-  });
-
-  it('should navigate to an actor on click', function () {
-    var url = this.browser.query('body > .container > .row .cast li:first-child a');
-    this.browser.clickLink('body > .container > .row .cast li:first-child a', function () {
-      expect(this.browser.location).to.equal(url.href);
-    });
+  it('should be a function', function () {
+    expect(routes.index).to.be.a('function');
   });
 });
 
-describe('Actor page', function() {
-  before(function () {
-    this.browser = new Browser({ site: 'http://localhost:3000' });
+describe('actor', function() {
+  var req,res;
+
+  beforeEach(function () {
+    req = {
+      query: {
+        name: 'Tom Hanks'
+      }
+    };
+    res = {
+      send: sinon.spy(),
+      render: sinon.spy()
+    };
   });
 
-  before(function(done) {
-    this.browser.visit('/actor?name=Hugh+Jackman', done);
+  it('should be a function', function () {
+    expect(routes.actor).to.be.a('function');
   });
+});
 
-  it('should get the correct actor', function () {
-    expect(this.browser.text('.title h1')).to.equal('Hugh Jackman');
+describe('#search', function() {
+  it('should be a function', function () {
+    expect(routes.search).to.be.a('function');
   });
+});
 
-  it('should calculate the correct amount of movies', function () {
-    expect(this.browser.queryAll('.actor ul li').length).to.eql(parseInt(this.browser.text('.rating'),10));
+describe('#stats', function() {
+  it('should be a function', function () {
+    expect(routes.stats).to.be.a('function');
+  });
+});
+
+describe('#np', function() {
+  it('should be a function', function () {
+    expect(routes.np).to.be.a('function');
+  });
+});
+
+describe('#tmdb', function() {
+  it('should be a function', function () {
+    expect(routes.tmdb).to.be.a('function');
+  });
+});
+
+describe('#trakt', function() {
+  it('should be a function', function () {
+    expect(routes.trakt).to.be.a('function');
+  });
+});
+
+describe('#watching', function() {
+  it('should be a function', function () {
+    expect(routes.watching).to.be.a('function');
+  });
+});
+
+describe('#quiz', function() {
+  it('should be a function', function () {
+    expect(routes.quiz).to.be.a('function');
   });
 });

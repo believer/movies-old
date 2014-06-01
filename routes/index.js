@@ -20,7 +20,6 @@ exports.index = function(req, res) {
       res.render('index', { movies:movies });
     });
   });
-
 };
 
 /**
@@ -39,7 +38,6 @@ exports.actor = function(req, res) {
       res.render('actor', { movies:movies, actor:name } );
     });
   });
-
 };
 
 /**
@@ -58,7 +56,6 @@ exports.search = function(req, res) {
       res.send(movies);
     });
   });
-
 };
 
 /**
@@ -206,7 +203,6 @@ exports.stats = function(req, res) {
       // res.send(stats);
     });
   });
-
 };
 
 exports.np = function(req,res) {
@@ -230,7 +226,6 @@ exports.np = function(req,res) {
     });
 
   });
-
 };
 
 exports.tmdb = function(req,res) {
@@ -247,7 +242,6 @@ exports.tmdb = function(req,res) {
   request({ uri:url, headers: {'Accept': 'application/json'} },function (err, response, body) {
     res.send(body);
   });
-
 };
 
 
@@ -270,23 +264,7 @@ exports.trakt = function(req,res) {
     });
 
   });
-
 };
-
-var crews = {
-  Director: function () { 'use strict'; return 'director'; },
-  Writing: function () {  'use strict'; return 'writer'; },
-  Screenplay: function () { 'use strict'; return 'writer'; },
-  Writer: function () { 'use strict'; return 'writer'; },
-  'Original Music Composer': function () {  'use strict'; return 'music'; }
-};
-
-function getCrew (job) {
-  'use strict';
-
-  var crew = crews[job];
-  return crew ? crew() : null;
-}
 
 exports.watching = function(req, res) {
 
@@ -335,7 +313,7 @@ exports.watching = function(req, res) {
 
     // Add crew
     crew.map(function (person) {
-      var crewType = getCrew(person.job);
+      var crewType = movee.getCrew(person.job);
       if (crewType) { myMovie[crewType].push(person.name); }
     });
 
@@ -353,14 +331,7 @@ exports.watching = function(req, res) {
       });
     });
   });
-
 };
-
-function randomIntFromInterval (min,max) {
-  'use strict';
-
-  return Math.floor(Math.random()*(max-min+1)+min);
-}
 
 function shuffle (array) {
 
@@ -397,7 +368,7 @@ exports.quiz = function (req,res) {
         return movie.tagline !== '';
       });
 
-      var random       = randomIntFromInterval(0, movies.length)
+      var random       = movee.randomIntFromInterval(0, movies.length)
       ,   randomMovie  = movies[random]
       ,   alternatives = [];
 
@@ -406,7 +377,7 @@ exports.quiz = function (req,res) {
       movee.mongoConnect(function (err, collection) {
         collection.find().toArray(function(error, all) {
           for (var i = 0; i < 3; i++) {
-            var randAlternative = randomIntFromInterval(0, all.length);
+            var randAlternative = movee.randomIntFromInterval(0, all.length);
             var alt = all[randAlternative];
 
             if (alt) {
@@ -421,5 +392,4 @@ exports.quiz = function (req,res) {
       });
     });
   });
-
 };

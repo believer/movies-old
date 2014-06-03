@@ -39,6 +39,24 @@ exports.index = function(req, res) {
   });
 };
 
+exports.numberOfMovies = function (req, res) {
+  'use strict';
+
+  var skip = parseInt(req.query.skip, 10) || 0;
+  var limit = parseInt(req.query.limit, 10) || 50;
+
+  movee.mongoConnect(function (err, collection) {
+    collection.find().sort({date:-1}).skip(skip).limit(limit).toArray(function(error, movies) {
+      var send = {
+        resultCount: movies.length,
+        results: movies
+      };
+
+      res.send(send);
+    });
+  });
+};
+
 exports.covers = function (req, res) {
   'use strict';
 

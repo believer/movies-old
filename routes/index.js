@@ -59,8 +59,7 @@ exports.numberOfMovies = function (req, res) {
               function (err, modified) {
                 console.log(err);
                 console.log(modified);
-                console.log('inserted ', i);
-            });
+              });
           }
         });
       });

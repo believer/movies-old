@@ -81,7 +81,7 @@ exports.covers = function (imdb, callback) {
       if (!error && body) {
         var movie = JSON.parse(body);
 
-        if (movie.posters.length) {
+        if (movie && movie.posters && movie.posters.length) {
           var poster = {
             img: 'http://image.tmdb.org/t/p/w500' + movie.posters[0].file_path
           };

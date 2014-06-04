@@ -69,16 +69,13 @@ exports.numberOfMovies = function (req, res) {
     });
   });
 };
-exports.covers = function (req, res) {
+
+exports.covers = function (imdb, callback) {
   'use strict';
 
-  var id = req.query.imdb;
-
-  console.log(id);
-
-  if (id) {
+  if (imdb) {
     request({
-      url: tmdbBaseUrl + id + '/images?api_key=' + tmdbKey,
+      url: tmdbBaseUrl + imdb + '/images?api_key=' + tmdbKey,
       headers: {'Accept': 'application/json'},
       method: 'GET'
     }, function (error, response, body) {
@@ -90,12 +87,13 @@ exports.covers = function (req, res) {
             img: 'http://image.tmdb.org/t/p/w500' + movie.posters[0].file_path
           };
           
-          res.send(poster);
+          return callback(poster);
         }
       }
     });
+
   } else {
-    res.send({});
+    return {};
   }
 };
 

@@ -46,17 +46,29 @@ exports.numberOfMovies = function (req, res) {
   var limit = parseInt(req.query.limit, 10) || 50;
 
   movee.mongoConnect(function (err, collection) {
-    collection.find().sort({date:-1}).skip(skip).limit(limit).toArray(function(error, movies) {
-      var send = {
-        resultCount: movies.length,
-        results: movies
-      };
+    collection.find().sort({_id:-1}).skip(skip).limit(limit).toArray(function (error, movies) {
+      movies.map(function (movie) {
+        var imdb = movie.imdbid || '';
 
-      res.send(send);
+        exports.covers(imdb, function (poster) {
+          console.log(poster);
+          if (movie.poster) { return; }
+
+          if (poster && poster.img) {
+            collection.update({'title':movie.title},{ $set:{'poster':poster.img} },
+              function (err, modified) {
+                console.log(err);
+                console.log(modified);
+                console.log('inserted ', i);
+            });
+          }
+        });
+      });
+
+      res.send({ 'done':'and done' });
     });
   });
 };
-
 exports.covers = function (req, res) {
   'use strict';
 

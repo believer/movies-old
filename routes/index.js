@@ -26,15 +26,14 @@ exports.index = function(req, res) {
       var movie = movies[0];
       var imdb = movie.imdbid || '';
 
-      request('http://localhost:3000/cover?imdb=' + imdb,
-        function (err, response, poster) {
-          movie.poster = JSON.parse(poster);
-          movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
-          movie.skip = skip;
+      exports.covers(imdb, function (poster) {
+        movie.poster = JSON.parse(poster);
+        movie.shortDesc = movie.desc ? movee.truncate(movie.desc, 160) : '';
+        movie.skip = skip;
 
-          res.render('index', { movie:movie });
-          // res.send(movie);
-        });
+        res.render('index', { movie:movie });
+        // res.send(movie);
+      });
     });
   });
 };
@@ -46,25 +45,13 @@ exports.numberOfMovies = function (req, res) {
   var limit = parseInt(req.query.limit, 10) || 50;
 
   movee.mongoConnect(function (err, collection) {
-    collection.find().sort({_id:-1}).skip(skip).limit(limit).toArray(function (error, movies) {
-      movies.map(function (movie) {
-        var imdb = movie.imdbid || '';
+    collection.find().sort({date:-1}).skip(skip).limit(limit).toArray(function(error, movies) {
+      var send = {
+        resultCount: movies.length,
+        results: movies
+      };
 
-        exports.covers(imdb, function (poster) {
-          console.log(poster);
-          if (movie.poster) { return; }
-
-          if (poster && poster.img) {
-            collection.update({'title':movie.title},{ $set:{'poster':poster.img} },
-              function (err, modified) {
-                console.log(err);
-                console.log(modified);
-              });
-          }
-        });
-      });
-
-      res.send({ 'done':'and done' });
+      res.send(send);
     });
   });
 };
@@ -296,11 +283,10 @@ exports.np = function(req,res) {
       movie.cast = people.cast;
       movie.crew = people.crew;
 
-      request('http://localhost:3000/cover?imdb=' + movie.imdb_id,
-        function (err, response, poster) {
-          movie.poster = JSON.parse(poster);
-          res.render('watching', { movie:movie });
-        });
+      exports.covers(imdb, function (poster) {
+        movie.poster = JSON.parse(poster);
+        res.render('watching', { movie:movie });
+      });
     });
 
   });

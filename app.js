@@ -43,7 +43,7 @@ app.get('/watching', routes.trakt);
 app.get('/tmdb', routes.tmdb);
 app.get('/quiz', routes.quiz);
 app.post('/new', routes.watching);
-app.get('/lastfm', routes.lastfm);
+app.post('/lastfm', routes.lastfm);
 
 module.exports = app;
 

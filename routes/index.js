@@ -469,20 +469,9 @@ exports.lastfm = function (req, res) {
     lastfm = lastfm.recenttracks.track[0];
     var when = lastfm['@attr'].nowplaying === 'true' ? 'Now playing' : 'Last song';
     var obj = {
-      'username': when,
       'text': lastfm.artist['#text'] + ' - ' + lastfm.name,
-      'icon_emoji': ':musical_score:'
     };
 
     res.send(obj);
-
-    // var hook = 'https://iteamsolutions.slack.com/services/hooks/incoming-webhook?token=BcV2ggv6inX9AHpXMrfNiScG';
-    // var payload = 'payload=' + JSON.stringify(obj);
-
-    // request.post({
-    //   url: hook,
-    //   body: JSON.stringify(obj)
-    // }, function (error, response, body) {
-    // });
   });
 };

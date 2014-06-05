@@ -458,3 +458,31 @@ exports.quiz = function (req,res) {
     });
   });
 };
+
+exports.lastfm = function (req, res) {
+  'use strict';
+
+  var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=iteam1337&api_key=59a34f30f3c5163f936e755463780ad2&format=json&limit=1';
+
+  request(url,function (err, response, body) {
+    var lastfm = JSON.parse(body);
+    lastfm = lastfm.recenttracks.track[0];
+    var when = lastfm['@attr'].nowplaying === 'true' ? 'Now playing' : 'Last song';
+    var obj = {
+      'username': when,
+      'text': lastfm.artist['#text'] + ' - ' + lastfm.name,
+      'icon_emoji': ':musical_score:'
+    };
+
+    res.send(obj);
+
+    // var hook = 'https://iteamsolutions.slack.com/services/hooks/incoming-webhook?token=BcV2ggv6inX9AHpXMrfNiScG';
+    // var payload = 'payload=' + JSON.stringify(obj);
+
+    // request.post({
+    //   url: hook,
+    //   body: JSON.stringify(obj)
+    // }, function (error, response, body) {
+    // });
+  });
+};

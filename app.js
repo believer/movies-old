@@ -6,7 +6,9 @@
 'use strict';
 
 var express = require('express')
-,   routes  = require('./routes')
+,   index  = require('./lib/routes/index')
+,   lastfm  = require('./lib/routes/lastfm')
+,   movies  = require('./lib/routes/movies')
 ,   http    = require('http')
 ,   path    = require('path')
 ,   cors    = require('cors')
@@ -32,18 +34,18 @@ if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/movies', routes.numberOfMovies);
-app.get('/actor', routes.actor);
-app.get('/cover', routes.covers);
-app.get('/search', routes.search);
-app.get('/stats', routes.stats);
-app.get('/np', routes.np);
-app.get('/watching', routes.trakt);
-app.get('/tmdb', routes.tmdb);
-app.get('/quiz', routes.quiz);
-app.post('/new', routes.watching);
-app.post('/lastfm', routes.lastfm);
+app.get('/', movies.index);
+app.get('/movies', movies.numberOfMovies);
+app.get('/actor', index.actor);
+app.get('/cover', index.covers);
+app.get('/search', index.search);
+app.get('/stats', index.stats);
+app.get('/np', index.np);
+app.get('/watching', index.trakt);
+app.get('/tmdb', index.tmdb);
+app.get('/quiz', index.quiz);
+app.post('/new', index.watching);
+app.post('/lastfm', lastfm.lastfm);
 
 module.exports = app;
 

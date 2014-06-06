@@ -19,7 +19,7 @@ var config = {
 }
 
 gulp.task('test', function (cb) {
-  return gulp.src(['app.js', 'routes/**/*.js'])
+  return gulp.src(['index.js', 'lib/**/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .on('end', function () {
@@ -60,12 +60,12 @@ gulp.task('nodemon', function () {
   })
   .on('restart', function () {
     // console.log('restarted!')
-  })
-})
+  });
+});
 
 gulp.task('watch', function () {
   gulp.watch([config.styles + config.allStyle], ['less']);
-  gulp.watch(['app.js','build/scripts/**/*.js','routes/**/*.js','test/**/*.js'], ['scripts','test']);
+  gulp.watch(['app.js','build/scripts/**/*.js','lib/**/*.js','test/**/*.js'], ['scripts','test']);
 
   var server = livereload();
   gulp.watch('public/**').on('change', function (file) {

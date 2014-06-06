@@ -3,7 +3,7 @@
 var chai   = require('chai')
 ,   expect = chai.expect
 ,   sinon  = require('sinon')
-,   movee  = require('../routes/movee-utils');
+,   movee  = require('../../lib/utils/movee');
 
 describe('#sortNames', function() {
   var sandbox;

@@ -12,7 +12,9 @@ describe('lastfmService', function () {
     promise,
     req,
     clock,
-    movee;
+    movee,
+    request,
+    url;
 
   beforeEach(function () {
     sinon.stub(process, 'nextTick').yields();
@@ -21,25 +23,7 @@ describe('lastfmService', function () {
 
     req = {
       body: {
-        decisionId: '123'
-      },
-      params: {
-        sample_id: '09B',
-        item_id: '00A'
-      },
-      query: {
-        state: 'reviewed',
-        skip: 0,
-        limit: 25
-      },
-      connection: {
-        encrypted: false
-      },
-      headers: {
-        host: 'test'
-      },
-      session: {
-        username: 'tester.gonna.test'
+        'text': 'np:hpbeliever'
       }
     };
 
@@ -51,10 +35,13 @@ describe('lastfmService', function () {
       mongoConnect: sinon.spy()
     };
 
-    routes.get.deferred = Q.defer();
+    url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user={user}&api_key=59a34f30f3c5163f936e755463780ad2&format=json&limit=1';
+
+    request = sinon.stub();
 
     lastfmService = proxyquire(process.cwd() + '/lib/services/lastfm', {
       '../utils/movee': movee,
+      'request': request
     });
   });
 
@@ -64,6 +51,42 @@ describe('lastfmService', function () {
   });
 
   it('should be a function', function () {
-    expect(routes.get).to.be.a('function');
+    expect(lastfmService.get).to.be.a('function');
+  });
+
+  it('should send a request to the Last.fm API when someone types "np:username"', function () {
+    req = {
+      body: {
+        'text': 'np:hpbeliever'
+      }
+    };
+
+    lastfmService.get(req);
+
+    expect(request).calledOnce.and.calledWith(url.replace('{user}', 'hpbeliever'));
+  });
+
+  it('should send a request to the Last.fm API when someone types "nowplaying: username"', function () {
+    req = {
+      body: {
+        'text': 'nowplaying: ankjevel'
+      }
+    };
+
+    lastfmService.get(req);
+
+    expect(request).calledOnce.and.calledWith(url.replace('{user}', 'ankjevel'));
+  });
+
+  it('should send a request to the Last.fm API with "iteam1337" when someone types np or nowplaying', function () {
+    req = {
+      body: {
+        'text': 'np'
+      }
+    };
+
+    lastfmService.get(req);
+
+    expect(request).calledOnce.and.calledWith(url.replace('{user}', 'iteam1337'));
   });
 });

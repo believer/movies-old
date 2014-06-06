@@ -38,7 +38,6 @@ app.get('/', movies.index);
 app.get('/movies', movies.numberOfMovies);
 app.get('/actor', index.actor);
 app.get('/cover', index.covers);
-app.get('/search', index.search);
 app.get('/stats', index.stats);
 app.get('/np', index.np);
 app.get('/watching', index.trakt);

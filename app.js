@@ -9,6 +9,8 @@ var express = require('express')
 ,   index  = require('./lib/routes/index')
 ,   lastfm  = require('./lib/routes/lastfm')
 ,   movies  = require('./lib/routes/movies')
+,   actor  = require('./lib/routes/actor')
+,   teamplus  = require('./lib/routes/teamplus')
 ,   http    = require('http')
 ,   path    = require('path')
 ,   cors    = require('cors')
@@ -36,7 +38,7 @@ if ('development' === app.get('env')) {
 
 app.get('/', movies.index);
 app.get('/movies', movies.numberOfMovies);
-app.get('/actor', index.actor);
+app.get('/actor', actor.actor);
 app.get('/cover', index.covers);
 app.get('/stats', index.stats);
 app.get('/np', index.np);
@@ -45,6 +47,7 @@ app.get('/tmdb', index.tmdb);
 app.get('/quiz', index.quiz);
 app.post('/new', index.watching);
 app.post('/lastfm', lastfm.lastfm);
+app.post('/teamplus', teamplus.send);
 
 module.exports = app;
 

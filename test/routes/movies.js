@@ -54,7 +54,7 @@ describe('#index', function() {
     var result = { results: [{ title: 'Non-Stop' }]};
     route.index(req,res,next);
     promise.then.yield(result);
-    expect(res.render).calledOnce.and.calledWith('index', { movie: result.results[0]});
+    expect(res.render).calledOnce.and.calledWith('index', { movies: result.results});
   });
 });
 

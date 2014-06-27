@@ -47,6 +47,7 @@ app.get('/tmdb', index.tmdb);
 app.get('/quiz', index.quiz);
 app.post('/new', index.watching);
 app.post('/lastfm', lastfm.lastfm);
+app.get('/team', teamplus.redirect);
 app.post('/teamplus', teamplus.send);
 
 module.exports = app;

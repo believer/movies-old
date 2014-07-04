@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "./node_modules/mocha/bin/mocha --reporter spec --globals a,n,b"
+    "test": "./node_modules/mocha/bin/mocha --reporter spec --globals a,n,b --recursive"
   },
   "dependencies": {
     "cors": "^2.3.1",

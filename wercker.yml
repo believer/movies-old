@@ -13,7 +13,7 @@ build:
 deploy:
   steps:
     - add-to-known_hosts:
-        hostname: 198.199.127.23
+        hostname: blvr.se
     - mktemp:
         envvar: PRIVATEKEY_PATH
     - create-file:
@@ -27,7 +27,7 @@ deploy:
           pwd
           ls -la
           rm -rf node_modules/
-          scp -i $PRIVATEKEY_PATH -r . root@198.199.127.23:/var/local/www/api
+          scp -i $PRIVATEKEY_PATH -r . root@blvr.se:/var/local/www/api
     - script:
         name: npm install and start api
-        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/api && npm install && forever stopall && forever start -w app.js"
+        code: ssh -i $PRIVATEKEY_PATH -l root blvr.se "cd /var/local/www/api && npm install && forever stopall && forever start -w app.js"

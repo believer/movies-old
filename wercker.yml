@@ -1,16 +1,10 @@
 box: wercker/nodejs
-# Build definition
 build:
-  # The steps that will be executed on build
   steps:
-    # A step that executes `npm install` command
     - npm-install
 
-    # Run tests
     - npm-test
 
-    # A custom script step, name value is used in the UI
-    # and the code value contains the command that get executed
     - script:
         name: echo nodejs information
         code: |
@@ -33,12 +27,7 @@ deploy:
           pwd
           ls -la
           rm -rf node_modules/
-          scp -i $PRIVATEKEY_PATH -r . root@198.199.127.23:/var/local/www
+          scp -i $PRIVATEKEY_PATH -r . root@198.199.127.23:/var/local/www/api
     - script:
-        name: npm install
-        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/ &&  npm install"
-    - script:
-        name: start application
-        code: |
-          ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "if [[ \"\$(status node-app)\" = *start/running* ]]; then stop node-app -n ; fi"
-          ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 start node-app
+        name: npm install and start api
+        code: ssh -i $PRIVATEKEY_PATH -l root 198.199.127.23 "cd /var/local/www/api && npm install && forever stopall && forever start -w app.js"

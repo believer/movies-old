@@ -27,7 +27,9 @@ gulp.task('test', function (cb) {
         .pipe(plumber())  
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(mocha({reporter: 'Spec'}))
+        .pipe(mocha({
+          reporter: 'Dot'
+        }))
         .on('end', cb);
     });
 });

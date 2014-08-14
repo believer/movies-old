@@ -30,4 +30,4 @@ deploy:
           scp -i $PRIVATEKEY_PATH -r . root@blvr.se:/var/local/www/api
     - script:
         name: npm install and start api
-        code: ssh -i $PRIVATEKEY_PATH -l root blvr.se "cd /var/local/www/api && npm install && forever stopall && forever start -w app.js"
+        code: ssh -i $PRIVATEKEY_PATH -l root blvr.se "cd /var/local/www/api && npm install && forever start -c nodemon app.js"

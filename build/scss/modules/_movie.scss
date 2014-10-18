@@ -1,0 +1,80 @@
+/**
+ * Movie
+ * -----------------------------
+ * The movies block and styling for a movie
+ * 
+ */
+
+// Block
+.movies {
+  @extend %height--full;
+
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+// Element - A movie
+.movies__movie {
+  @extend %height--full;
+  
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+// Element - Inner content alignment
+.movies__movie-content {
+  align-self: center;
+}
+
+.movies__movie-watch-date {
+}
+
+// Element - Movie title
+.movies__movie-title {
+  color: $color--accent;
+  font-family: 'Anton', sans-serif;
+  font-size: 120px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.movies__movie-description {
+  margin: 20px auto;
+  max-width: 50%;
+}
+
+.movies__movie-cast {
+  margin:0 auto 20px;
+  max-width: 80%;
+
+  .movies__movie-actor {
+    @include horizontal-list-item;
+
+    &:not(:last-child) {
+      &:after {
+        content: ",";
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.movies__movie-meta-values {
+  margin-bottom: 20px;
+}
+
+.movies__movie-meta {
+  display: inline-block;
+  font-weight: 700;
+
+  &:not(:last-child) { margin-right: 20px; }
+
+  &--certification {
+    background: $color--accent;
+    color: #fff;
+    padding: 10px 20px;
+  }
+}
+

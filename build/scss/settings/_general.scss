@@ -1,0 +1,13 @@
+html,
+body {
+  @extend %height--full;
+
+  color: $color--font;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.container {
+  @extend %height--full;
+}

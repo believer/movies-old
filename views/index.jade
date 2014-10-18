@@ -8,29 +8,30 @@ block content
     //- input#search(type="text")
     //- ul#search-results
   if movies
-    each movie in movies
-      .row.index
-        .col-md-12
-          .title
+    ul.movies
+      each movie in movies
+        li.movies__movie
+          .movies__movie-content
             if !!movie.date
-              .date #{ moment(movie.date).format('D MMMM YYYY') }
-            h2= movie.title
-          h5 Starring
-          if !!movie.cast
-            ul.cast
-              each actor in movie.cast
-                li
-                  a(href="/actor?name=" + actor)= actor
-          .information
-            if !!movie.num
-              .num= movie.num
-            if !!movie.certification
-              .certification= "Rated " + movie.certification
-            if !!movie.year
-              .year= movie.year
-          h3.rating It was 
-            span.rating= ratings[movie.rating - 1]
-          .ion-ios7-arrow-down
+              .movies__movie-watch-date #{ moment(movie.date).format('D MMMM YYYY') }
+            h2.movies__movie-title= movie.title
+            p.movies__movie-description= movie.desc
+            h5 Starring
+            if !!movie.cast
+              ul.movies__movie-cast
+                each actor in movie.cast
+                  li.movies__movie-actor
+                    a(href="/actor?name=" + actor)= actor
+            .movies__movie-meta-values
+              if !!movie.num
+                .movies__movie-meta= movie.num
+              if !!movie.certification
+                .movies__movie-meta.movies__movie-meta--certification= "Rated " + movie.certification
+              if !!movie.year
+                .movies__movie-meta= movie.year
+            h3.rating It was 
+              span.rating= ratings[movie.rating - 1]
+            .ion-ios7-arrow-down
   else
     .row.index
       .col-md-12

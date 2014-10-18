@@ -10,7 +10,6 @@ var express = require('express')
 ,   lastfm  = require('./lib/routes/lastfm')
 ,   movies  = require('./lib/routes/movies')
 ,   actor  = require('./lib/routes/actor')
-,   teamplus  = require('./lib/routes/teamplus')
 ,   http    = require('http')
 ,   path    = require('path')
 ,   cors    = require('cors')
@@ -47,8 +46,6 @@ app.get('/tmdb', index.tmdb);
 app.get('/quiz', index.quiz);
 app.post('/new', index.watching);
 app.post('/lastfm', lastfm.lastfm);
-app.get('/team', teamplus.redirect);
-app.post('/teamplus', teamplus.send);
 
 module.exports = app;
 

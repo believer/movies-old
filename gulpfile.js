@@ -19,20 +19,10 @@ var config = {
   mainStyle: 'main.less'
 }
 
-gulp.task('test', function (cb) {
-  return gulp.src(['index.js', 'lib/**/*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .on('end', function () {
-      gulp.src(['test/**/*.js'])
-        .pipe(plumber())  
-        .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(mocha({
-          reporter: 'Dot'
-        }))
-        .on('end', cb);
-    });
+gulp.task('test', function () {
+  return gulp.src(['test/**/*.js'])
+    .pipe(plumber())
+    .pipe(mocha({ reporter:'spec' }));
 });
 
 gulp.task('scripts', function() {

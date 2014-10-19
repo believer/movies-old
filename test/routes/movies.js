@@ -56,6 +56,13 @@ describe('#index', function() {
     promise.then.yield(result);
     expect(res.render).calledOnce.and.calledWith('index', { movies: result.results});
   });
+
+  it("should call next with error if any", function() {
+    var result = { oh: 'noes' };
+    route.index(req, res, next);
+    promise.catch.yield(result);
+    expect(next).calledOnce.and.calledWith(result);    
+  });
 });
 
 describe('#movies', function() {

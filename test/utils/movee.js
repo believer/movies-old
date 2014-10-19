@@ -155,3 +155,16 @@ describe('#truncate', function() {
     expect(movee.truncate(shorttext,100)).to.eql(shorttext);
   });
 });
+
+describe("#shuffleArray", function() {
+  it("should be a function", function() {
+    expect(movee.shuffleArray).to.be.a('function');
+  });
+
+  it("should shuffle an array", function() {
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    expect(movee.shuffleArray(array)).to.not.eql([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+});
+

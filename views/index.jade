@@ -8,10 +8,12 @@ block content
     //- input#search(type="text")
     //- ul#search-results
   if movies
-    ul.movies
+    .movies
       each movie in movies
-        li.movies__movie
+        .movies__movie
           .movies__movie-content
+            //- if !!movie.poster
+              img.movies__movie-poster(src=movie.poster)
             if !!movie.date
               .movies__movie-watch-date #{ moment(movie.date).format('D MMMM YYYY') }
             h2.movies__movie-title= movie.title

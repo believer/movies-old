@@ -41,7 +41,6 @@ app.get('/actor', actor.actor);
 app.get('/cover', index.covers);
 app.get('/stats', index.stats);
 app.get('/np', index.np);
-app.get('/watching', index.trakt);
 app.get('/tmdb', index.tmdb);
 app.get('/quiz', index.quiz);
 app.post('/new', index.watching);

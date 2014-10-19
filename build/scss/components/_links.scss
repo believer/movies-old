@@ -1,4 +1,6 @@
 a {
  @include hover-link;
- @include link-colors($color--font); 
+ @include link-colors($color--font);
+
+ font-weight: bold;
 }

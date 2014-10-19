@@ -5,17 +5,18 @@
 
 'use strict';
 
-var express = require('express')
-,   index  = require('./lib/routes/index')
-,   lastfm  = require('./lib/routes/lastfm')
-,   movies  = require('./lib/routes/movies')
-,   actor  = require('./lib/routes/actor')
-,   http    = require('http')
-,   path    = require('path')
-,   cors    = require('cors')
-,   app     = express();
+var express = require('express');
+var index   = require('./lib/routes/index');
+var lastfm  = require('./lib/routes/lastfm');
+var movies  = require('./lib/routes/movies');
+var actor   = require('./lib/routes/actor');
+var http    = require('http');
+var path    = require('path');
+var cors    = require('cors');
 
-// all environments
+var app     = express();
+var server  = http.createServer(app);
+
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,11 +31,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
 
-// development only
-if ('development' === app.get('env')) {
-  app.use(express.errorHandler());
-}
-
 app.get('/', movies.index);
 app.get('/movies', movies.numberOfMovies);
 app.get('/actor', actor.actor);
@@ -48,6 +44,6 @@ app.post('/lastfm', lastfm.lastfm);
 
 module.exports = app;
 
-http.createServer(app).listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

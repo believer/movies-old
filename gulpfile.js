@@ -1,16 +1,16 @@
-var gulp       = require('gulp')
-,   path       = require('path')
-,   sass       = require('gulp-sass')
-,   sourcemaps = require('gulp-sourcemaps')
-,   nodemon    = require('gulp-nodemon')
-,   livereload = require('gulp-livereload')
-,   plumber    = require('gulp-plumber')
-,   rename     = require('gulp-rename')
-,   jshint     = require('gulp-jshint')
-,   mocha      = require('gulp-mocha')
-,   concat     = require('gulp-concat')
-,   uglify     = require('gulp-uglify');
-
+var gulp         = require('gulp');
+var path         = require('path');
+var sass         = require('gulp-sass');
+var sourcemaps   = require('gulp-sourcemaps');
+var nodemon      = require('gulp-nodemon');
+var livereload   = require('gulp-livereload');
+var plumber      = require('gulp-plumber');
+var rename       = require('gulp-rename');
+var jshint       = require('gulp-jshint');
+var mocha        = require('gulp-mocha');
+var concat       = require('gulp-concat');
+var uglify       = require('gulp-uglify');
+var autoprefixer = require('gulp-autoprefixer');
 
 var config = {
   styles: 'build/less/**/',
@@ -37,8 +37,9 @@ gulp.task('sass', function () {
   gulp.src('./build/scss/style.scss')
     .pipe(plumber())
     .pipe(sourcemaps.init())
-      .pipe(sass({
-        outputStyle: 'compressed'
+      .pipe(sass())
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions']
       }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./public/css/'));

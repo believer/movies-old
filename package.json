@@ -7,7 +7,6 @@
     "test": "./node_modules/mocha/bin/mocha --reporter spec --globals a,n,b --recursive"
   },
   "dependencies": {
-    "canvas-chart": "^1.0.1",
     "cors": "^2.5.0",
     "express": "3.4.8",
     "jade": "*",

@@ -14,6 +14,11 @@ var stats   = require('./lib/routes/stats');
 var http    = require('http');
 var path    = require('path');
 var cors    = require('cors');
+var dotenv = require('dotenv');
+
+// Load environment variables
+dotenv._getKeysAndValuesFromEnvFilePath('./env/.env');
+dotenv._setEnvs();
 
 var app     = express();
 var server  = http.createServer(app);

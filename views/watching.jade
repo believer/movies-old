@@ -3,21 +3,22 @@ extends layout
 block content
 
   if movie
-    #watching.row.index
-      .col-md-12
-        form(method="post",action="/new")
-          .title
-            h2(name="title=")= movie.title
-          h5 Starring
-          if !!movie.cast
-            ul.cast
-              each actor in movie.cast
-                li
-                  a(href="/actor?name=" + actor)= actor.name
-          h5 Any extra cast members?
-          .more-cast
-            input(type="text", id="extraCast", name="extraCast")
-          h3.rating I give it a
-            input(type="text", id="rating", name="rating")
+    .movies
+      .movies__movie
+        .movies__movie-content
+          form(method="post", action="/new")
+            h2.movies__movie-title= movie.title
+            h5 Starring
+            if !!movie.cast
+              ul.movies__movie-cast
+                each actor in movie.cast
+                  li.movies__movie-actor
+                    a(href="/actor?name=" + actor)= actor.name
+            h5 Any extra cast members?
+            .movies__movie-extra-cast
+              input(type="text", id="extraCast", name="extraCast")
+            div.movies__movie-np-rating
+              span I give it a
+              input(type="text", id="rating", name="rating")
 
-          input(type="submit")
+            input.btn(type="submit", placeholder="Skicka")

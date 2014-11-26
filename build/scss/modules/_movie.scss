@@ -83,3 +83,19 @@
   }
 }
 
+.movies__movie-extra-cast {
+  margin-bottom: 20px;
+  width: 100%;
+
+  input {
+    width: 80%;
+  }
+}
+
+.movies__movie-np-rating {
+  display: inline-block;
+
+  input {
+    margin: 0 20px;
+  }
+}

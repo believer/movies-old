@@ -1,0 +1,9 @@
+.btn {
+  @include appearance;
+  @include border-radius;
+
+  background: $color--accent;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+}

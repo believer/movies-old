@@ -12,13 +12,6 @@ var concat       = require('gulp-concat');
 var uglify       = require('gulp-uglify');
 var autoprefixer = require('gulp-autoprefixer');
 
-var config = {
-  styles: 'build/less/**/',
-  stylesOut: 'public/css/',
-  allStyle: '*.less',
-  mainStyle: 'main.less'
-}
-
 gulp.task('test', function () {
   return gulp.src(['test/**/*.js'])
     .pipe(plumber())
@@ -34,7 +27,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('sass', function () {
-  gulp.src('./build/scss/style.scss')
+  gulp.src('./build/scss/screen.scss')
     .pipe(plumber())
     .pipe(sourcemaps.init())
       .pipe(sass())

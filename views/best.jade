@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  if years
+    .best
+      each year in years
+        .best__year
+          h2.best__year-number= year.year
+          ul.best__movies
+            each movie in year.movies
+              li= movie

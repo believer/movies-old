@@ -44,7 +44,6 @@ app.get('/cover', index.covers);
 app.get('/stats', stats.stats);
 app.get('/np', index.np);
 app.get('/tmdb', index.tmdb);
-app.get('/quiz', index.quiz);
 app.post('/new', index.watching);
 app.post('/lastfm', lastfm.lastfm);
 

@@ -46,10 +46,4 @@ describe('moviesService', function () {
   it('should be a function', function () {
     expect(moviesService.get).to.be.a('function');
   });
-
-  it('should get movies from the db', function () {
-    moviesService.get(req);
-
-    expect(movee.mongoConnect).calledOnce;
-  });
 });

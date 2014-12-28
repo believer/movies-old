@@ -53,12 +53,6 @@ gulp.task('nodemon', function () {
 gulp.task('watch', function () {
   gulp.watch(['./build/scss/**/*.scss'], ['sass']);
   gulp.watch(['app.js','build/scripts/**/*.js','lib/**/*.js','test/**/*.js'], ['scripts','test']);
-
-  var server = livereload();
-  gulp.watch(['public/**','views/**'])
-    .on('change', function (file) {
-      server.changed(file.path);
-    });
 });
 
-gulp.task('default', ['sass', 'scripts', 'test', 'nodemon', 'watch']);
+gulp.task('default', ['sass', 'scripts', 'nodemon', 'watch']);
